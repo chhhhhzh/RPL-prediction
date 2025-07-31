@@ -1,0 +1,29 @@
+.card {
+    padding: 30rpx;
+    border-radius: 24rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  .icon-wrapper {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20rpx;
+  }
+  .icon {
+    width: 50rpx;
+    height: 50rpx;
+  }
+  .title {
+    font-size: 28rpx;
+    font-weight: bold;
+    line-height: 1.3;
+  }

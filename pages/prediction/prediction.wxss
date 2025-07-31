@@ -1,0 +1,38 @@
+.container {
+    padding: 30rpx;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30rpx;
+  }
+  .button-group {
+    margin-top: 60rpx;
+  }
+  .button {
+    width: 100%;
+    height: 96rpx;
+    line-height: 96rpx;
+    border-radius: 16rpx;
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-top: 30rpx;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .primary {
+    background-color: #f97316;
+    color: white;
+  }
+  .secondary {
+    background-color: #fff;
+    color: #f97316;
+    border: 1rpx solid #f97316;
+  }
+  .icon {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 16rpx;
+  }

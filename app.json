@@ -1,0 +1,18 @@
+{
+    "pages": [
+      "pages/home/home",
+      "pages/prediction/prediction",
+      "pages/moduleDetail/moduleDetail",
+      "pages/result/result",
+      "pages/profile/profile"
+    ],
+    "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#FFF",
+      "navigationBarTitleText": "暖孕",
+      "navigationBarTextStyle": "black",
+      "navigationStyle": "custom"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+  }

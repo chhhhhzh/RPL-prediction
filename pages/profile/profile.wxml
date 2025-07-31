@@ -1,0 +1,33 @@
+<view>
+  <nav-bar title="个人中心" showBack="{{true}}" showHome="{{true}}"></nav-bar>
+  <view class="container">
+    <!--雷达图-->
+    <view class="chart-card">
+      <text class="chart-title">六维状态雷达图</text>
+      <view class="chart-container">
+        <ec-canvas id="radar-chart" canvas-id="radar-canvas" ec="{{ radar }}"></ec-canvas>
+      </view>
+    </view>
+
+    <!--关键指标历史曲线-->
+    <view class="chart-card">
+      <!-- 标题和下拉菜单的容器 -->
+      <view class="card-header">
+        <text class="chart-title">关键指标历史曲线</text>
+        
+        <picker bindchange="bindPickerChange" value="{{indicatorIndex}}" range="{{indicatorList}}" range-key="title">
+          <view class="picker-display">
+            <text class="picker-text">{{indicatorList[indicatorIndex].title}}</text>
+            <image class="picker-arrow" src="{{iconDown}}"></image>
+          </view>
+        </picker>
+      </view>
+      
+      <!-- 图表容器 -->
+      <view class="chart-container">
+        <ec-canvas id="line-chart" canvas-id="line-canvas" ec="{{ line }}"></ec-canvas>
+      </view>
+    </view>
+    
+  </view>
+</view>

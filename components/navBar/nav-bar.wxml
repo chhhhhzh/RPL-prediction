@@ -1,0 +1,11 @@
+<view class="nav-bar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="nav-bar-content">
+    <view class="back-icon" wx:if="{{showBack}}" bind:tap="goBack">
+      <image src="{{iconBack}}"></image>
+    </view>
+    <view class="title">{{title}}</view>
+    <view class="home-icon" wx:if="{{showHome}}" bind:tap="goHome">
+        <image src="{{iconHome}}"></image>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,74 @@
+.container {
+    padding: 30rpx;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #fff7ed;
+  }
+  .header {
+    text-align: center;
+    padding: 40rpx 0;
+  }
+  .header-title {
+    font-size: 32rpx;
+    color: #9a3412;
+    display: block;
+  }
+  .probability {
+    font-size: 120rpx;
+    font-weight: bold;
+    color: #f97316;
+    margin: 20rpx 0;
+    display: block;
+  }
+  .confidence {
+    font-size: 28rpx;
+    color: #ea580c;
+    display: block;
+  }
+  .factors-section {
+    margin-top: 60rpx;
+  }
+  .section-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+  }
+  .factors-list {
+    margin-top: 30rpx;
+  }
+  .factor-card {
+    background-color: #fff;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    margin-bottom: 24rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  .factor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .factor-name {
+    font-size: 30rpx;
+    font-weight: bold;
+    color: #333;
+  }
+  .factor-effect {
+    font-size: 24rpx;
+    padding: 8rpx 16rpx;
+    border-radius: 20rpx;
+  }
+  .positive {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  .negative {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  .factor-reason {
+    margin-top: 20rpx;
+    font-size: 28rpx;
+    color: #666;
+    line-height: 1.5;
+  }  

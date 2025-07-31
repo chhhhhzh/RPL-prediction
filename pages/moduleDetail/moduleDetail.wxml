@@ -1,0 +1,22 @@
+<!-- pages/moduleDetail/moduleDetail.wxml -->
+<view class="page-wrapper">
+  <nav-bar title="{{module.title}}" showBack="{{true}}" showHome="{{true}}"></nav-bar>
+  
+  <view class="container">
+    <view class="form-container">
+      <block wx:for="{{module.indicators}}" wx:key="id">
+        <view class="form-item">
+          <text class="form-label">{{item.label}}</text>
+          <input class="form-input" 
+                 type="text" 
+                 placeholder="{{item.placeholder}}" 
+                 value="{{item.value}}"
+                 bindinput="handleInputChange"
+                 data-indicatorid="{{item.id}}" />
+        </view>
+      </block>
+    </view>
+    
+    <button class="button primary" bindtap="saveAndBack">保存并返回</button>
+  </view>
+</view>

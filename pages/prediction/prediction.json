@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+      "nav-bar": "/components/navBar/nav-bar",
+      "module-card": "/components/moduleCard/module-card"
+    }
+  }

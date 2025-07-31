@@ -1,0 +1,10 @@
+<view class="page-container">
+  <view class="content">
+    <text class="title">“复发性流产预测”</text>
+    <text class="subtitle">我们致力于用温暖的科技，结合前沿的预测模型，为您提供专业的复发性流产风险评估，陪伴您走过每一段孕育旅程。</text>
+  </view>
+  <view class="button-group">
+    <button class="button primary" bindtap="goToPrediction">开始预测</button>
+    <button class="button secondary" bindtap="goToProfile">个人中心</button>
+  </view>
+</view>

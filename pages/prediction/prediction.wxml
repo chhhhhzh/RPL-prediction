@@ -1,0 +1,17 @@
+<view>
+    <nav-bar title="预测报告" showBack="{{true}}" showHome="{{true}}"></nav-bar>
+    <view class="container">
+        <view class="card-grid">
+            <block wx:for="{{modules}}" wx:key="id">
+                <module-card module="{{item}}" bind:tap="goToModuleDetail" data-moduleid="{{item.id}}"></module-card>
+            </block>
+        </view>
+        <view class="button-group">
+            <button class="button secondary" bindtap="handleUpload">
+                <image class="icon" src="{{iconUpload}}"></image>
+                上传检验报告
+            </button>
+            <button class="button primary" bindtap="handlePredict">开始预测</button>
+        </view>
+    </view>
+</view>

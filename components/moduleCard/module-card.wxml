@@ -1,0 +1,6 @@
+<view class="card {{module.color}}">
+  <view class="icon-wrapper">
+    <image class="icon" src="{{module.icon}}"></image>
+  </view>
+  <text class="title {{module.textColor}}">{{module.title}}</text>
+</view>

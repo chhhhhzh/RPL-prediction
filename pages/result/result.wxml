@@ -1,0 +1,25 @@
+<view>
+  <nav-bar title="预测报告" showBack="{{true}}"></nav-bar>
+  <view class="container bg-orange-50">
+    <view class="header">
+      <text class="header-title">本次妊娠成功生育概率</text>
+      <text class="probability">{{mockResult.probability}}%</text>
+      <text class="confidence">置信区间: {{mockResult.confidenceInterval[0]}}% - {{mockResult.confidenceInterval[1]}}%</text>
+    </view>
+
+    <view class="factors-section">
+      <text class="section-title">主要影响因素分析</text>
+      <view class="factors-list">
+        <block wx:for="{{mockResult.influencingFactors}}" wx:key="name">
+          <view class="factor-card">
+            <view class="factor-header">
+              <text class="factor-name">{{item.name}}</text>
+              <text class="factor-effect {{item.effect.includes('正面') ? 'positive' : 'negative'}}">{{item.effect}}</text>
+            </view>
+            <text class="factor-reason">{{item.reason}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>
