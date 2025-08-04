@@ -7,7 +7,18 @@
       <block wx:for="{{module.indicators}}" wx:key="id">
         <view class="form-item">
           <text class="form-label">{{item.label}}</text>
-          <input class="form-input" 
+          <picker wx:if="{{item.inputType === 'select'}}"
+              type="selector" 
+              range="{{item.option}}"
+              value="{{item.selectedIndex}}"
+              bindchange="handleSelectChange"
+              data-indicatorid="{{item.id}}"
+              >
+              <view class="picker-display">
+                {{item.selectedIndex !== null ? item.option[item.selectedIndex] : item.placeholder}}
+              </view>
+          </picker>
+          <input wx:else class="form-input" 
                  type="text" 
                  placeholder="{{item.placeholder}}" 
                  value="{{item.value}}"

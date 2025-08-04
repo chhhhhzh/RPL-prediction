@@ -14,6 +14,20 @@ Page({
       module: moduleData
     })
   },
+  handleSelectChange(e) {
+    const indicatorId = e.currentTarget.dataset.indicatorid;
+    const selectedIndex = e.detail.value; // 获取选项索引
+    const indicators = this.data.module.indicators;
+    const index = indicators.findIndex(item => item.id === indicatorId);
+  
+    if (index > -1) {
+      this.setData({
+        [`module.indicators[${index}].selectedIndex`]: selectedIndex,
+        // 同步值到 value 字段（与其他指标一致）
+        [`module.indicators[${index}].value`]: indicators[index].option[selectedIndex]
+      });
+    }
+  },
   handleInputChange(e) {
     const indicatorId = e.currentTarget.dataset.indicatorid;
     const value = e.detail.value;
