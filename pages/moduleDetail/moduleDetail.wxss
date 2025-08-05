@@ -37,16 +37,19 @@
     color: #333;
   }
 
-  .picker-display {
+ /* 合并样式 */
+.picker-display {
     font-size: 14px;
-    align-items: center;
-    justify-content: center;
-    text-align: center; 
     padding: 10rpx;
-    border: 1rpx solid #ccc;
     border-radius: 4rpx;
-    color: #333;
-    width: 100%; /* 与输入框同宽 */
+    width: 100%;
+    text-align: center;
+    /* 默认有值时的样式 */
+    color: #333; 
+  }
+  /* 未选中的样式 */
+  .picker-display.placeholder {
+    color: grey !important; /* 提高优先级 */
   }
 
   .form-input {

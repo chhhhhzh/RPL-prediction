@@ -7,16 +7,17 @@
       <block wx:for="{{module.indicators}}" wx:key="id">
         <view class="form-item">
           <text class="form-label">{{item.label}}</text>
-          <picker wx:if="{{item.inputType === 'select'}}"
-              type="selector" 
-              range="{{item.option}}"
-              value="{{item.selectedIndex}}"
-              bindchange="handleSelectChange"
-              data-indicatorid="{{item.id}}"
-              >
-              <view class="picker-display">
+          <picker 
+            wx:if="{{item.inputType === 'select'}}"
+            mode="selector" 
+            range="{{item.option}}"
+            value="{{item.selectedIndex}}"
+            bindchange="handleSelectChange"
+            data-indicatorid="{{item.id}}"
+            >
+            <view class="picker-display {{item.selectedIndex === null ? 'placeholder' : ''}}">
                 {{item.selectedIndex !== null ? item.option[item.selectedIndex] : item.placeholder}}
-              </view>
+            </view>
           </picker>
           <input wx:else class="form-input" 
                  type="text" 
@@ -27,7 +28,7 @@
         </view>
       </block>
     </view>
-    
+    <button bindtap="testCloudFunction" type="primary">测试云功能</button>
     <button class="button primary" bindtap="saveAndBack">保存并返回</button>
   </view>
 </view>

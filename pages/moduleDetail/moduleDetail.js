@@ -41,9 +41,18 @@ Page({
       });
     }
   },
+
   saveAndBack() {
     // 将当前页面的修改保存回全局数据
     app.globalData.predictionData[this.data.moduleId] = this.data.module;
     wx.navigateBack();
+  },
+
+  testCloudFunction() {
+    wx.cloud.callFunction({
+      name: 'test',  // 在cloudfunctions创建该函数
+      success: res => wx.showToast({ title: '云函数调用成功' }),
+      fail: err => wx.showToast({ title: '调用失败:' + err.errMsg })
+    })
   }
 })
