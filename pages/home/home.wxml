@@ -5,6 +5,5 @@
   </view>
   <view class="button-group">
     <button class="button primary" bindtap="goToPrediction">开始预测</button>
-    <button class="button secondary" bindtap="goToProfile">个人中心</button>
   </view>
 </view>

@@ -1,43 +1,44 @@
 {
-    "compileType": "miniprogram",
-    "libVersion": "trial",
-    "packOptions": {
+  "compileType": "miniprogram",
+  "libVersion": "trial",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "cloud": true,
+    "enhance": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
       "ignore": [],
-      "include": []
+      "disablePlugins": [],
+      "outputPath": ""
     },
-    "setting": {
-      "coverView": true,
-      "es6": true,
-      "postcss": true,
-      "minified": true,
-      "cloud": true,
-      "enhance": true,
-      "showShadowRootInWxmlPanel": true,
-      "packNpmRelationList": [],
-      "babelSetting": {
-        "ignore": [],
-        "disablePlugins": [],
-        "outputPath": ""
-      },
-      "compileWorklet": false,
-      "uglifyFileName": false,
-      "uploadWithSourceMap": true,
-      "packNpmManually": false,
-      "minifyWXSS": true,
-      "minifyWXML": true,
-      "localPlugins": false,
-      "condition": false,
-      "swc": false,
-      "disableSWC": true,
-      "disableUseStrict": false,
-      "useCompilerPlugins": false
-    },
-    "condition": {},
-    "editorSetting": {
-      "tabIndent": "auto",
-      "tabSize": 2
-    },
-    "cloudfunctionRoot": "cloudfunctions/",
-    "appid": "wx6d8e78603fe2ec3b",
-    "simulatorPluginLibVersion": {}
-  }
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "auto",
+    "tabSize": 2
+  },
+  "cloudfunctionRoot": "cloudfunctions/",
+  "appid": "wx6d8e78603fe2ec3b",
+  "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
+}
