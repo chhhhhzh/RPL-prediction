@@ -37,10 +37,11 @@
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
   }
   
-  .avatar {
-    width: 120rpx;
-    height: 120rpx;
-    border-radius: 50%;
+  .user-info-card > .avatar { 
+    width: 128rpx;
+    height: 128rpx;
+    object-fit: cover;
+    border-radius: 8rpx;
   }
   
   .nickname {
@@ -105,22 +106,23 @@
   }
   
   .avatar-button {
-    width: 180rpx;
-    height: 180rpx;
-    padding: 0;
-    border-radius: 50%;
-    border: 4rpx solid #eee;
-    margin-bottom: 20rpx;
+    width: 128rpx !important;          /* 折中尺寸：80rpx ≈ 40px（iPhone6） */
+    height: 128rpx !important;         /* 显式定义高度 */
+    min-width: 0 !important;          /* 覆盖按钮默认最小宽度 */
+    min-height: 0 !important;         /* 覆盖按钮默认最小高度 */
+    padding: 0 !important;            /* 清除内边距 */
+    border: 1.5rpx solid #eee;        /* 细边框 */
+    border-radius: 8rpx;               /* 适当圆角 */
     display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     box-sizing: border-box;
   }
   
   .avatar-button .avatar {
-      width: 100%;
-      height: 100%;
+    width: 100% !important;           /* 继承容器宽度 */
+    height: 100% !important;           /* 继承容器高度 */
+    object-fit: cover;                /* 关键：裁剪填充 */
+    border-radius: 8rpx;              /* 与按钮圆角一致 */
   }
   
   .avatar-tip {

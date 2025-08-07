@@ -28,7 +28,6 @@
         </view>
       </block>
     </view>
-    <button bindtap="testCloudFunction" type="primary">测试云功能</button>
     <button class="button primary" bindtap="saveAndBack">保存并返回</button>
   </view>
 </view>

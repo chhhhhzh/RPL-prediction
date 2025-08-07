@@ -29,6 +29,11 @@
         <ec-canvas id="line-chart" canvas-id="line-canvas" ec="{{ line }}"></ec-canvas>
       </view>
     </view>
+
+    <view class="chart-card">
+      <text class="chart-title">历史数据与结果</text>
+      
+    </view>
   </view>
 
   <view wx:else class="auth-container">

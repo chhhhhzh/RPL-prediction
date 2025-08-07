@@ -48,11 +48,4 @@ Page({
     wx.navigateBack();
   },
 
-  testCloudFunction() {
-    wx.cloud.callFunction({
-      name: 'test',  // 在cloudfunctions创建该函数
-      success: res => wx.showToast({ title: '云函数调用成功' }),
-      fail: err => wx.showToast({ title: '调用失败:' + err.errMsg })
-    })
-  }
 })
