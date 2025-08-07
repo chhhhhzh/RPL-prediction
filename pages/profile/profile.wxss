@@ -66,15 +66,10 @@
   }
   
   .card-header {
-    position: relative; /* 父容器设为相对定位（作为定位基准） */
-    width: 100%;        /* 确保宽度占满父容器 */
-  }
-  
-  .card-header button {
-    position: absolute; /* 按钮绝对定位 */
-    right: 0;          /* 贴紧右侧边缘 */
-    top: 50%;          /* 垂直居中 */
-    transform: translateY(-50%); /* 微调垂直位置 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10rpx;
   }
   
   .picker-display {
