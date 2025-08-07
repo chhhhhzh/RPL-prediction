@@ -20,7 +20,10 @@ App({
         } else {
             console.log('未发现本地缓存，用户未授权');
         }
-
+        wx.cloud.callFunction({ name: 'getUserData' })
+            .then(res => {
+            this.globalData.openid = res.result.openid
+            })
         this.initPredictionData();
     },
 

@@ -17,7 +17,7 @@ Page({
     tempAvatarUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiNkZWRlZGUiPjxwYXRoIGQ9Ik0xMiAyYy01LjUyMyAwLTEwIDQuNDc3LTEwIDEwczQuNDc3IDEwIDEwIDEwIDEwLTQuNDc3IDEwLTEwLTQuNDc3LTEwLTEwLTEwem0wIDE4Yy00LjQxMSAwLTgtMy41ODktOC04czMuNTg5LTggOC04IDggMy41ODkgOCA4LTMuNTg5IDgtOCA4eiIvPjxwYXRoIGQ9Ik0xMiA2Yy0yLjIxIDAtNC Axel.NzkxLTQgNHMxLjc5IDQgNCA0IDQtMS43OTEgNC00LTEuNzktNC00LTR6bTAgNmMtMS4xMDMgMC0yLS44OTctMi0yczAuODk3LTIgMi0yIDIgLjg5NyAyIDItLjguODk3LTIgMnptLTYgNGMwLTIuMjA5IDEuNzktNC00IDRoOHYtMmMwLTEuMTAzLS44OTctMi0yLTJoLTRjLTEuMTAzIDAtMiAuODk3LTIgMnYyem0yIDBoNGMtMi4yMDkgMC00LTEuNzktNC00aC0ydjJjMCIDEuMTAzIDAuODk3IDIgMiAyaDR2LTJjMC0yLjIwOS0xLjc5LTQtNC00aC00djJjMC0xLjEwMy0uODk3LTItMi0yeiIvPjwvc3ZnPg==',
     tempNickName: '',
     isAvatarChosen: false,
-
+    historyLoading: false,
     radar: { lazyLoad: true },
     line: { lazyLoad: true },
     iconDown: icons.chevronDown,
@@ -26,12 +26,17 @@ Page({
       title: allIndicatorsData[key].title
     })),
     indicatorIndex: 0,
+    historyList: [], // 历史数据列表
+    historyLoading: false
   },
 
   chartInstance: null,
 
   onShow() {
     this.checkAuthStatus();
+    if (this.data.isAuthorized) {
+        this.loadHistory();
+    }
   },
 
   checkAuthStatus() {
@@ -82,11 +87,58 @@ Page({
     wx.showToast({ title: '授权成功' });
     this.checkAuthStatus();
   },
-
+  
+  async loadHistory() {
+    this.setData({ historyLoading: true });
+    try {
+      // 确保openid存在
+      let openid = app.globalData.openid;
+      if (!openid) {
+        const userRes = await wx.cloud.callFunction({ name: 'getUserData' });
+        openid = userRes.result.openid;
+        app.globalData.openid = openid; // 更新全局数据
+      }
+  
+      const db = wx.cloud.database();
+      const res = await db.collection('medicalRecords')
+        .where({ _openid: openid })
+        .orderBy('date', 'desc')
+        .get();
+  
+      // 数据处理（新增↓↓↓）
+      const historyList = res.data.map(item => {
+        const date = item.date ? new Date(item.date) : new Date();
+        return {
+          ...item,
+          formattedDate: `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`,
+          // 简化指标显示
+          indicators: item.indicators.slice(0, 3).map(ind => ({
+            ...ind,
+            shortLabel: ind.label.length > 6 ? ind.label.substring(0, 5) + '...' : ind.label
+          }))
+        };
+      });
+  
+      this.setData({ historyList, historyLoading: false });
+      
+    } catch (err) {
+      console.error('历史加载失败', err);
+      this.setData({ historyLoading: false });
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    }
+  },
+  
+  // 刷新历史
+  refreshHistory() {
+    if (!this.data.historyLoading) {
+      this.loadHistory();
+    }
+  },
   initCharts() {
     if (this.chartInstance) return;
     this.initRadar();
     this.initLineChart();
+    this.loadHistory();
   },
 
   initRadar() {
