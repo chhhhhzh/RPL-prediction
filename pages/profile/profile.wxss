@@ -10,6 +10,20 @@
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
   }
   
+  .loading-tip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40rpx 0;
+    background-color: #fff; /* 背景色可根据需求调整 */
+  }
+
+  .loading-tip text {
+    font-size: 28rpx;
+    color: #999;
+  }
+  
   .chart-title {
     font-size: 36rpx;
     font-weight: bold;
@@ -162,4 +176,79 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .history-item {
+    padding: 20rpx;
+    border-bottom: 1rpx solid #f0f0f0;
+    margin-bottom: 15rpx;
+  }
+  
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10rpx;
+  }
+  
+  .history-date {
+    font-size: 24rpx;
+    color: #888;
+  }
+  
+  .history-module {
+    font-size: 28rpx;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .history-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10rpx;
+  }
+  
+  .indicator-item {
+    background: #f8f8f8;
+    border-radius: 8rpx;
+    padding: 8rpx 15rpx;
+    margin-right: 15rpx;
+    margin-bottom: 10rpx;
+    font-size: 26rpx;
+  }
+  
+  .indicator-label {
+    color: #666;
+  }
+  
+  .indicator-value {
+    color: #1890ff;
+    font-weight: 500;
+  }
+  
+  .history-result {
+    text-align: right;
+    font-size: 28rpx;
+  }
+  
+  .high-risk {
+    color: #f5222d;
+    font-weight: bold;
+  }
+  
+  .low-risk {
+    color: #52c41a;
+    font-weight: bold;
+  }
+  
+  .empty-tip {
+    text-align: center;
+    padding: 40rpx 0;
+    color: #999;
+  }
+  
+  .empty-icon {
+    width: 120rpx;
+    height: 120rpx;
+    display: block;
+    margin: 0 auto 20rpx;
   }
