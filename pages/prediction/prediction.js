@@ -8,12 +8,22 @@ const {
 
 Page({
     data: {
-        modules: Object.values(modulesConfig),
+        modules: [], // 初始为空，在onShow中加载
         iconUpload: icons.testTube
     },
-    onLoad() {
-        if (!app.globalData.predictionData) {
-            app.globalData.predictionData = JSON.parse(JSON.stringify(modulesConfig));
+
+    // 每次进入或返回该页面时，都从全局加载最新数据，确保界面同步
+    onShow() {
+        if (app.globalData.predictionData) {
+            this.setData({
+                modules: Object.values(app.globalData.predictionData)
+            });
+        } else {
+            // 如果全局数据意外丢失，则重新初始化
+            app.initPredictionData();
+            this.setData({
+                modules: Object.values(app.globalData.predictionData)
+            });
         }
     },
 
@@ -21,54 +31,88 @@ Page({
         const moduleId = e.currentTarget.dataset.moduleid;
         wx.navigateTo({
             url: `/pages/moduleDetail/moduleDetail?id=${moduleId}`,
-        })
+        });
     },
 
-    _mergeOcrData(ocrData) {
-        // 使用 modulesConfig 作为基础，以确保所有字段都存在
-        let currentData = JSON.parse(JSON.stringify(modulesConfig));
+    handlePredict() {
+        // 1. 从全局数据中提取用户输入的、有值的指标
+        const userInputData = this._prepareInputData();
 
-        // 遍历 OCR 数据，只更新 currentData 中的指标值
+        // 2. 进行严格的空值验证
+        if (Object.keys(userInputData).length === 0) {
+            wx.showModal({
+                title: '无法预测',
+                content: '请至少填写一项有效的指标才能进行预测。',
+                showCancel: false
+            });
+            return; // 验证失败，终止执行
+        }
+
+        console.log('验证通过，准备传递给结果页的数据:', userInputData);
+
+        // 验证通过，将准备好的数据通过URL参数传递给结果页
+        // 我们将数据转换为JSON字符串进行传递，并编码以防特殊字符
+        wx.navigateTo({
+            url: `/pages/result/result?data=${encodeURIComponent(JSON.stringify(userInputData))}`,
+        });
+    },
+
+    // 数据准备函数，负责将全局数据转换为干净的 key-value 对象 ---
+    _prepareInputData() {
+        const predictionData = app.globalData.predictionData;
+        const userInput = {};
+        if (!predictionData) return userInput;
+
+        for (const moduleId in predictionData) {
+            const module = predictionData[moduleId];
+            for (const indicator of module.indicators) {
+                // 只处理有值的指标
+                if (indicator.value !== null && indicator.value !== '') {
+                    // 如果是下拉选择类型
+                    if (indicator.inputType === 'select') {
+                        // "阳性" 转换为 1, "阴性" 或其他选项（如"正常"）转换为 0
+                        userInput[indicator.id] = (indicator.value === '阳性' || indicator.value === 'RF' || indicator.value === 'PS' || indicator.value === 'Jo' || indicator.value === 'HHCY') ? 1 : 0;
+                    } else {
+                        // 其他文本输入类型，直接使用其值
+                        userInput[indicator.id] = indicator.value;
+                    }
+                }
+            }
+        }
+        return userInput;
+    },
+
+    // OCR
+    _mergeOcrData(ocrData) {
+        let currentData = JSON.parse(JSON.stringify(modulesConfig));
         for (const moduleId in ocrData) {
             if (currentData[moduleId]) {
                 ocrData[moduleId].indicators.forEach(newIndicator => {
-                    const currentIndicator = currentData[moduleId].indicators.find(
-                        ind => ind.id === newIndicator.id
-                    );
+                    const currentIndicator = currentData[moduleId].indicators.find(ind => ind.id === newIndicator.id);
                     if (currentIndicator && (!currentIndicator.value || currentIndicator.value === '') && newIndicator.value) {
                         currentIndicator.value = newIndicator.value;
                     }
                 });
             }
         }
-        
-        // 关键修改：将全局数据也更新为这个完整的新对象
         app.globalData.predictionData = currentData;
-        
-        // 重新构建 modules 数据，确保图标等信息完整
         this.setData({
             modules: Object.values(app.globalData.predictionData)
         });
-
-        // 以下是原始的 Toast 提示逻辑
-        // ...
         const updatedFields = [];
         for (const moduleId in ocrData) {
             if (modulesConfig[moduleId]) {
                 ocrData[moduleId].indicators.forEach(newIndicator => {
                     const originalIndicator = modulesConfig[moduleId].indicators.find(ind => ind.id === newIndicator.id);
                     if (originalIndicator && newIndicator.value) {
-                        // 假设 OCR 只返回有值的指标
                         updatedFields.push(originalIndicator.label);
                     }
                 });
             }
         }
-
         if (updatedFields.length > 0) {
-            const toastTitle = `已补充：${updatedFields.join('、')}`;
             wx.showToast({
-                title: toastTitle,
+                title: `已补充：${updatedFields.join('、')}`,
                 icon: 'none',
                 duration: 3000
             });
@@ -80,7 +124,6 @@ Page({
             });
         }
     },
-
     _processFile(tempFilePath, fileName) {
         wx.showLoading({
             title: '正在上传并识别...',
@@ -131,7 +174,6 @@ Page({
             }
         });
     },
-
     handleUpload() {
         wx.showActionSheet({
             itemList: [
@@ -177,20 +219,4 @@ Page({
             }
         });
     },
-
-    handlePredict() {
-        const predictionData = app.globalData.predictionData;
-        const isAllFilled = Object.values(predictionData).every(module => module.indicators.some(ind => ind.value !== ''));
-        if (!isAllFilled) {
-            wx.showModal({
-                title: '提示',
-                content: '请至少在每个模块中填写一项指标',
-                showCancel: false
-            });
-            return;
-        }
-        wx.navigateTo({
-                 url: '/pages/result/result',
-             })
-    }
 });

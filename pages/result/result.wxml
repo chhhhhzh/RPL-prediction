@@ -1,25 +1,42 @@
-<view>
-  <nav-bar title="预测报告" showBack="{{true}}"></nav-bar>
-  <view class="container bg-orange-50">
-    <view class="header">
-      <text class="header-title">本次妊娠成功生育概率</text>
-      <text class="probability">{{mockResult.probability}}%</text>
-      <text class="confidence">置信区间: {{mockResult.confidenceInterval[0]}}% - {{mockResult.confidenceInterval[1]}}%</text>
+<!-- pages/result/result.wxml -->
+<view class="container">
+    <!-- 1. 加载状态 -->
+    <view wx:if="{{isLoading}}" class="loading-container">
+        <van-loading type="spinner" size="24px" vertical>正在为您进行智能预测...</van-loading>
     </view>
 
-    <view class="factors-section">
-      <text class="section-title">主要影响因素分析</text>
-      <view class="factors-list">
-        <block wx:for="{{mockResult.influencingFactors}}" wx:key="name">
-          <view class="factor-card">
-            <view class="factor-header">
-              <text class="factor-name">{{item.name}}</text>
-              <text class="factor-effect {{item.effect.includes('正面') ? 'positive' : 'negative'}}">{{item.effect}}</text>
-            </view>
-            <text class="factor-reason">{{item.reason}}</text>
-          </view>
-        </block>
-      </view>
+    <!-- 2. 错误状态 -->
+    <view wx:if="{{isError && !isLoading}}" class="error-container">
+        <text class="error-title">预测失败</text>
+        <text class="error-message">{{errorMessage}}</text>
+        <button class="retry-button" bindtap="onRetry">点击重试</button>
+        <navigator url="/pages/prediction/prediction" open-type="navigateBack" class="back-button">返回修改</navigator>
     </view>
-  </view>
+
+    <!-- 3. 成功状态 -->
+    <view wx:if="{{!isLoading && !isError && resultData}}" class="result-container">
+        <view class="result-card">
+            <view class="probability-section">
+                <text class="probability-label">顺产概率</text>
+                <view class="probability-value">
+                    <text class="value">{{resultData.probability}}</text>
+                    <text class="percent">%</text>
+                </view>
+            </view>
+            <view class="ci-section">
+                <text class="ci-label">预测置信区间</text>
+                <text class="ci-value">[{{resultData.confidenceInterval[0]}}% - {{resultData.confidenceInterval[1]}}%]</text>
+            </view>
+        </view>
+
+        <!-- 可以在这里添加更多关于结果的解读和建议 -->
+        <view class="info-section">
+            <text class="info-title">结果解读</text>
+            <text class="info-text">
+                本预测结果基于您提供的指标，并通过机器学习模型计算得出，仅供参考，不能替代专业医疗建议。置信区间反映了模型对当前预测的把握程度，区间越窄表示把握越大。
+            </text>
+        </view>
+
+        <navigator url="/pages/prediction/prediction" open-type="navigateBack" class="back-button-bottom">返回上一页</navigator>
+    </view>
 </view>
