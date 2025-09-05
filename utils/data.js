@@ -222,7 +222,7 @@ const modulesConfig = {
             },
             {
                 id: 'b2gp1Igg',
-                label: '抗β2-糖蛋白I IgG（B2-GDP1IgG/B2-GDP1-IgA）',
+                label: '抗β2-糖蛋白I IgG（B2-GDP1IgG）',
                 value: '',
                 unit: 'U/mL',
                 placeholder: '例如: 18',

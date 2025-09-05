@@ -48,13 +48,13 @@ const transformFeatures = (rawData) => {
     if (rawData.hasOwnProperty('ACLIgM')) transformed['ACLIgM'] = (parseFloat(rawData['ACLIgM']) < 12) ? 1 : 0;
     if (rawData.hasOwnProperty('B2-GDP1IgM')) transformed['B2-GDP1IgM'] = (parseFloat(rawData['B2-GDP1IgM']) < 20) ? 1 : 0;
     if (rawData.hasOwnProperty('B2-GDP1IgG/B2-GDP1-IgA')) transformed['B2-GDP1IgG/B2-GDP1-IgA'] = (parseFloat(rawData['B2-GDP1IgG/B2-GDP1-IgA']) < 20) ? 1 : 0;
-    if (rawData.hasOwnProperty('LA')) { const val = parseFloat(rawData['LA']); transformed['LA'] = (val > 0.8 && val < 1.2) ? 1 : 0; }
-    if (rawData.hasOwnProperty('C3')) { const val = parseFloat(rawData['C3']); transformed['C3'] = (val > 0.790 && val < 1.520) ? 1 : 0; }
-    if (rawData.hasOwnProperty('C4')) { const val = parseFloat(rawData['C4']); transformed['C4'] = (val > 0.120 && val < 0.360) ? 1 : 0; }
+    if (rawData.hasOwnProperty('LA')) { const val = parseFloat(rawData['LA']); transformed['LA'] = (val > 0.8 && val < 1.2) ? 0 : 1; }
+    if (rawData.hasOwnProperty('C3')) { const val = parseFloat(rawData['C3']); transformed['C3'] = (val > 0.790 && val < 1.520) ? 0 : 1; }
+    if (rawData.hasOwnProperty('C4')) { const val = parseFloat(rawData['C4']); transformed['C4'] = (val > 0.120 && val < 0.360) ? 0 : 1; }
     if (rawData.hasOwnProperty('25-VITD')) {
         let vitdValue = parseFloat(rawData['25-VITD']);
         if (vitdValue === 0) { vitdValue = Math.random() * (11.8) + 0.1; }
-        transformed['25-VITD'] = (vitdValue < 12) ? 1 : 0;
+        transformed['25-VITD'] = (vitdValue < 20) ? 1 : 0;
     }
     for (const key in rawData) {
         if (!transformed.hasOwnProperty(key)) { transformed[key] = parseInt(rawData[key], 10) === 1 ? 1 : 0; }

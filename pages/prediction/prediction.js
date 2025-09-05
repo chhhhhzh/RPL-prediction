@@ -34,6 +34,29 @@ Page({
         });
     },
 
+    // 清空数据
+    handleClearData() {
+        wx.showModal({
+            title: '确认操作',
+            content: '确定要清空所有已填写的指标吗？',
+            success: (res) => {
+                if (res.confirm) {
+                    // 调用 app.js 中的全局清空函数
+                    app.clearPredictionData();
+                    // 重新从已清空的全局数据加载到当前页面，刷新界面
+                    this.setData({
+                        modules: Object.values(app.globalData.predictionData)
+                    });
+                    wx.showToast({
+                        title: '数据已清空',
+                        icon: 'success',
+                        duration: 1500
+                    });
+                }
+            }
+        });
+    },
+
     handlePredict() {
         // 1. 从全局数据中提取用户输入的、有值的指标
         const userInputData = this._prepareInputData();
