@@ -6,7 +6,6 @@
     "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
-    "skylineRenderEnable": false,
     "preloadBackgroundData": false,
     "autoAudits": false,
     "useApiHook": true,
@@ -19,6 +18,6 @@
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
   },
-  "libVersion": "3.9.0",
+  "libVersion": "3.10.0",
   "condition": {}
 }
