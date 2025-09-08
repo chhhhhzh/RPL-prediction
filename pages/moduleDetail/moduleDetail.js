@@ -111,7 +111,7 @@ Page({
           month: new Date().getMonth() + 1
         }
       });
-      wx.showToast({ title: '云端保存成功' });
+      wx.showToast({ title: '数据保存成功' });
     } catch (err) {
         console.error('完整错误信息:', err)
         wx.showToast({ title: `失败:${err.errCode || err.message}`, icon: 'none' });

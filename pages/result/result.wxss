@@ -1,162 +1,260 @@
+/* pages/result/result.wxss */
 page {
-    background-color: #fff7ed;
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 40rpx;
-    box-sizing: border-box;
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards;
-  }
-  
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* --- 加载与错误状态 --- */
-  .loading-container,
-  .error-container {
-    text-align: center;
-    padding: 60rpx;
-  }
-  
-  /* Vant Loading 兼容样式 */
-  .loading-container .van-loading__text {
-    font-size: 28rpx;
-    color: #86909c;
-  }
-  
-  .error-title {
-    font-size: 40rpx;
-    font-weight: 500;
-    color: #e53e3e;
-    margin-bottom: 20rpx;
-  }
-  
-  .error-message {
-    font-size: 28rpx;
-    color: #86909c;
-    margin-bottom: 60rpx;
-  }
-  
-  .retry-button {
-    background-color: #2672ff;
-    color: #fff;
-    border-radius: 40rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    font-size: 30rpx;
-    margin-bottom: 30rpx;
-  }
-  
-  .back-button {
-    color: #86909c;
-    font-size: 28rpx;
-  }
-  
-  /* --- 成功状态 --- */
-  .result-container {
-    width: 100%;
-  }
-  
-  .result-card {
-    background: #ffffff;
-    border-radius: 32rpx; /* 更大的圆角 */
-    box-shadow: 0 10rpx 40rpx -15rpx rgba(4, 28, 64, 0.1); /* 更柔和的阴影 */
-    padding: 60rpx 50rpx;
-    margin-bottom: 40rpx;
-  }
-  
-  .probability-section {
-    text-align: center;
-    border-bottom: 1rpx solid #f2f3f5;
-    padding-bottom: 40rpx;
-    margin-bottom: 40rpx;
-  }
-  
-  .probability-label {
-    font-size: 28rpx;
-    color: #86909c; /* 标签颜色 */
-    text-transform: uppercase;
-    letter-spacing: 2rpx;
-  }
-  
-  .probability-value {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    margin-top: 10rpx;
-    color: #1d2129; /* 主色 */
-  }
-  
-  .probability-value .value {
-    font-size: 120rpx;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-  
-  .probability-value .percent {
-    font-size: 40rpx;
-    font-weight: 500;
-    margin-left: 8rpx;
-  }
-  
-  .ci-section {
-    text-align: center;
-  }
-  
-  .ci-label {
-    font-size: 26rpx;
-    color: #86909c;
-  }
-  
-  .ci-value {
-    display: block;
-    font-size: 40rpx;
-    font-weight: 500;
-    color: #1d2129;
-    margin-top: 16rpx;
-    letter-spacing: 1rpx;
-  }
-  
-  .info-section {
-    background-color: #ffffff;
-    border-radius: 24rpx;
-    padding: 30rpx 40rpx;
-    margin-bottom: 60rpx;
-  }
-  
-  .info-title {
-    font-size: 30rpx;
-    font-weight: 500;
-    color: #1d2129;
-    margin-bottom: 16rpx;
-  }
-  
-  .info-text {
-    font-size: 26rpx;
-    color: #4e5969;
-    line-height: 1.7;
-  }
-  
-  .back-button-bottom {
-    display: block;
-    width: 100%;
-    height: 96rpx;
-    line-height: 96rpx;
-    text-align: center;
-    background-color: #2672ff;
-    color: #fff;
-    border-radius: 48rpx;
-    font-size: 32rpx;
-    font-weight: 500;
-    box-shadow: 0 8rpx 16rpx -4rpx rgba(38, 114, 255, 0.3);
-  }  
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: #fff7ed;
+}
+
+/* --- 加载与错误状态 --- */
+.loading-container,
+.error-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60rpx;
+  box-sizing: border-box;
+}
+
+/* Vant Loading 兼容样式 */
+.loading-container .van-loading__text {
+  font-size: 28rpx;
+  color: #86909c;
+}
+
+.error-title {
+  font-size: 48rpx; /* 增大标题字体 */
+  font-weight: 600; /* 加粗标题 */
+  color: #d96600; /* 深橘色 */
+  margin-bottom: 20rpx;
+}
+
+.error-message {
+  font-size: 32rpx; /* 增大错误信息字体 */
+  color: #86909c;
+  margin-bottom: 60rpx;
+}
+
+/* --- 统一按钮样式 --- */
+.error-container .button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx; /* 按钮间距 */
+  width: 100%;
+  max-width: 500rpx; /* 限制按钮组的最大宽度，使其更居中 */
+}
+
+.error-container .button-base { /* 基础按钮样式 */
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  /* border: none; /* 暂时移除此行，因为 .back-button 会有自己的 border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  box-sizing: border-box; /* 确保 padding 和 border 包含在 width/height 内 */
+}
+
+.error-container .button-base:active {
+  opacity: 0.8;
+}
+
+.retry-button {
+  background-color: #ff9100; /* 暖橙色 */
+  color: #fff;
+  border: none; /* 确保主按钮没有边框 */
+  box-shadow: 0 8rpx 16rpx -4rpx rgba(255, 145, 0, 0.3);
+}
+
+.back-button {
+  background-color: transparent; /* 背景透明 */
+  color: #d96600; /* 深橘色文字 */
+  border: 2rpx solid #fecda6; /* 添加浅橙色边框 */
+  box-shadow: none; /* 移除阴影，或者使用一个很淡的阴影 */
+}
+
+/* 移除了原有的 .back-button 样式，因为它们被上面的 .retry-button 和 .back-button 替代 */
+.back-button-orig { /* 保留原有的 .back-button 名字，但样式已改变 */
+  color: #86909c;
+  font-size: 28rpx;
+}
+
+
+/* --- 成功状态 --- */
+.result-container {
+  width: 100%;
+  padding: 80rpx 40rpx;
+  box-sizing: border-box;
+}
+
+.result-card {
+  background: #ffffff;
+  border-radius: 32rpx;
+  box-shadow: 0 10rpx 40rpx -15rpx rgba(4, 28, 64, 0.1);
+  padding: 60rpx 50rpx;
+  margin-bottom: 40rpx;
+}
+
+.probability-section {
+  text-align: center;
+  border-bottom: 1rpx solid #f2f3f5;
+  padding-bottom: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.probability-label {
+  font-size: 28rpx;
+  color: #86909c;
+  text-transform: uppercase;
+  letter-spacing: 2rpx;
+}
+
+.probability-value {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin-top: 10rpx;
+  color: #1d2129;
+}
+
+.probability-value .value {
+  font-size: 120rpx;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.probability-value .percent {
+  font-size: 40rpx;
+  font-weight: 500;
+  margin-left: 8rpx;
+}
+
+.ci-section {
+  text-align: center;
+}
+
+.ci-label {
+  font-size: 26rpx;
+  color: #86909c;
+}
+
+.ci-value {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 500;
+  color: #1d2129;
+  margin-top: 16rpx;
+  letter-spacing: 1rpx;
+}
+
+.info-section {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 30rpx 40rpx;
+  margin-bottom: 60rpx;
+}
+
+.info-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1d2129;
+  margin-bottom: 16rpx;
+}
+
+.info-text {
+  font-size: 26rpx;
+  color: #4e5969;
+  line-height: 1.7;
+}
+
+.back-button-bottom {
+  display: block;
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  background-color: #ff9100;
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  box-shadow: 0 8rpx 16rpx -4rpx rgba(255, 145, 0, 0.3);
+  margin-top: 60rpx; /* 增加按钮上方间距 */
+}
+
+/* 新增：风险项模块样式 */
+.risk-factors-container {
+  width: 100%;
+  background: #fdf6e9;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 40rpx;
+}
+
+.risk-factors-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff9100;
+  margin-bottom: 30rpx;
+  display: block;
+}
+
+.risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.risk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
+.risk-icon {
+  width: 48rpx;
+  height: 48rpx;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.risk-icon .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.risk-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.risk-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1d2129;
+}
+
+.risk-tip {
+  font-size: 26rpx;
+  color: #86909c;
+  line-height: 1.5;
+  margin-top: 6rpx;
+}
+
+/* --- 针对 error-container 内按钮的包裹和对齐 --- */
+/* 在 .error-container 中，给按钮组添加一个包裹层，以便集中控制 */
+.error-container .button-group {
+  display: flex;
+  flex-direction: column; /* 保持按钮垂直排列 */
+  gap: 30rpx; /* 按钮之间的间距 */
+  width: 100%; /* 按钮组占满宽度 */
+  max-width: 500rpx; /* 限制按钮组的最大宽度，使其在视觉上更居中 */
+  margin-top: 40rpx; /* 增加按钮组与上面元素的间距 */
+}

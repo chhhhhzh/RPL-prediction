@@ -1,26 +1,21 @@
+// pages/result/result.js
 const app = getApp();
 
 Page({
     data: {
-        // isLoading: 用于控制加载动画的显示
-        // isError: 用于显示错误提示
-        // resultData: 存储最终的预测结果
         isLoading: true,
         isError: false,
         errorMessage: '',
-        resultData: null
+        resultData: null,
+        riskFactors: [] // 新增：存储风险项列表
     },
 
     onLoad(options) {
-        // 从页面启动参数 options 中获取数据
         if (options.data) {
             try {
-                // 将传递过来的JSON字符串解码并转换回对象
                 const userInputData = JSON.parse(decodeURIComponent(options.data));
-                // 直接调用云函数
                 this.callPredictFunction(userInputData);
             } catch (e) {
-                // 如果数据解析失败，显示错误
                 this.setData({
                     isLoading: false,
                     isError: true,
@@ -28,7 +23,6 @@ Page({
                 });
             }
         } else {
-            // 如果没有数据传递过来，则显示错误
             this.setData({
                 isLoading: false,
                 isError: true,
@@ -37,7 +31,6 @@ Page({
         }
     },
 
-    // 函数现在接收一个参数，不再自己准备数据
     async callPredictFunction(userInputData) {
         this.setData({
             isLoading: true,
@@ -57,7 +50,6 @@ Page({
             console.log('云函数返回结果:', res.result);
 
             if (res.result && res.result.success) {
-                // 预测成功，处理并设置结果
                 const result = res.result;
                 this.setData({
                     isLoading: false,
@@ -69,7 +61,9 @@ Page({
                             (result.confidenceInterval.upper * 100).toFixed(1)
                         ],
                         influencingFactors: [] // 暂时留空
-                    }
+                    },
+                    // --- 修改：接收并设置风险项数据 ---
+                    riskFactors: result.riskFactors || []
                 });
             } else {
                 throw new Error(res.result.error || '预测服务返回未知错误');
@@ -84,9 +78,9 @@ Page({
         }
     },
 
-    // 点击重试按钮的逻辑 (调用失败时出现)
     onRetry() {
-        // 因为数据已经丢失，最好的方式是返回上一页让用户重新提交
-        wx.navigateBack();
+        wx.reLaunch({
+            url: '/pages/prediction/prediction'
+        });
     }
 });
