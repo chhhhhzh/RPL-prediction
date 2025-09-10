@@ -1,0 +1,192 @@
+/* pages/historyDetail/historyDetail.wxss */
+page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background-color: #fff7ed; /* 保持原有的背景色 */
+  }
+  
+  /* 整体容器，用于内容居中 */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 水平居中 */
+    padding: 30rpx;
+    box-sizing: border-box;
+    min-height: 100vh; /* 确保容器至少占满视口高度 */
+  }
+  
+  .center-wrapper {
+    width: 100%; /* 允许内容占据整个宽度 */
+    max-width: 750rpx; /* 限制最大宽度，保持美观 */
+    display: flex;
+    flex-direction: column;
+    gap: 30rpx;
+    align-items: center; /* 内部元素也居中 */
+  }
+  
+  /* 通用卡片样式 */
+  .detail-card {
+    background-color: #fff;
+    padding: 40rpx;
+    border-radius: 20rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+    width: 100%; /* 卡片宽度占满父容器 */
+    box-sizing: border-box; /* 保证 padding 不会撑大元素 */
+  }
+  
+  /* 预测结果卡片样式 */
+  .result-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .probability-section,
+  .ci-section,
+  .date-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .probability-label,
+  .ci-label,
+  .date-label {
+    font-size: 28rpx;
+    color: #4e5969;
+    font-weight: bold;
+  }
+  
+  .probability-value {
+    display: flex;
+    align-items: baseline;
+    color: #ff9100;
+  }
+  
+  .probability-value .value {
+    font-size: 64rpx;
+    font-weight: bold;
+  }
+  
+  .probability-value .percent {
+    font-size: 28rpx;
+    margin-left: 5rpx;
+    font-weight: bold;
+  }
+  
+  .ci-value,
+  .date-value {
+    font-size: 28rpx;
+    color: #86909c;
+  }
+  
+  /* 输入指标卡片样式 */
+  .card-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30rpx;
+    display: block;
+  }
+  
+  .input-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .input-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx;
+    background-color: #f8f8f8;
+    border-radius: 12rpx;
+  }
+  
+  .input-label {
+    font-size: 28rpx;
+    color: #333;
+  }
+  
+  .input-value {
+    font-size: 28rpx;
+    color: #86909c;
+    font-weight: bold; /* 让值也加粗 */
+  }
+  
+  /* 风险提示卡片 */
+  .risk-factors-container {
+    background-color: #fffbe6; /* 稍微不同的背景色区分 */
+    border-left: 8rpx solid #f97316; /* 强调风险 */
+  }
+  
+  .risk-factors-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #f97316;
+    margin-bottom: 30rpx;
+    display: block;
+    text-align: center;
+  }
+  
+  .risk-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .risk-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10rpx;
+    padding-bottom: 20rpx;
+    border-bottom: 1rpx dashed #fddabd; /* 分隔线 */
+  }
+  .risk-item:last-child {
+    border-bottom: none; /* 最后一个不需要下边框 */
+    padding-bottom: 0;
+  }
+  
+  .risk-title {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .risk-tip {
+    font-size: 26rpx;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  /* 加载和错误状态样式 */
+  .loading-container,
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* 占屏幕大部分高度 */
+    width: 100%;
+  }
+  
+  .error-message {
+    color: #f56c6c;
+    font-size: 30rpx;
+    margin-bottom: 40rpx;
+    text-align: center;
+  }
+  
+  .refresh-button {
+    background-color: #f97316;
+    color: white;
+    font-size: 28rpx;
+    padding: 20rpx 40rpx;
+    border-radius: 40rpx;
+    border: none;
+    height: auto; /* 允许高度自适应 */
+    line-height: normal; /* 取消默认行高 */
+  }
+  
+  .refresh-button:active {
+    opacity: 0.8;
+  }

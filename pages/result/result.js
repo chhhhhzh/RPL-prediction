@@ -40,6 +40,7 @@ Page({
         try {
             console.log('接收到待预测的数据:', userInputData);
 
+            // 第一步：调用预测云函数
             const res = await wx.cloud.callFunction({
                 name: 'predict',
                 data: {
@@ -51,6 +52,7 @@ Page({
 
             if (res.result && res.result.success) {
                 const result = res.result;
+
                 this.setData({
                     isLoading: false,
                     isError: false,
@@ -62,9 +64,21 @@ Page({
                         ],
                         influencingFactors: [] // 暂时留空
                     },
-                    // --- 修改：接收并设置风险项数据 ---
                     riskFactors: result.riskFactors || []
                 });
+
+                // 新增：第二步：将结果保存到数据库
+                await wx.cloud.callFunction({
+                    name: 'getUserData', // 你的云函数名称
+                    data: {
+                        action: 'savePrediction',
+                        data: {
+                            userInput: userInputData, // 保存用户的输入数据
+                            predictionResult: res.result // 保存预测结果
+                        }
+                    }
+                });
+
             } else {
                 throw new Error(res.result.error || '预测服务返回未知错误');
             }

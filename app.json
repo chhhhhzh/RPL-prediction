@@ -4,7 +4,8 @@
         "pages/prediction/prediction",
         "pages/moduleDetail/moduleDetail",
         "pages/result/result",
-        "pages/profile/profile"
+        "pages/profile/profile",
+        "pages/historyDetail/historyDetail"
     ],
     "window": {
         "backgroundTextStyle": "light",

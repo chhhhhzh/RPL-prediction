@@ -27,13 +27,16 @@ Page({
     })),
     indicatorIndex: 0,
     historyList: [], // 历史数据列表
-    historyLoading: false
+    historyLoading: true
   },
 
   chartInstance: null,
 
   onShow() {
     this.checkAuthStatus();
+    if (app.globalData.isAuthorized) {
+        this.loadHistoryRecords();
+    }
     if (this.data.isAuthorized) {
         this.loadHistory();
     }
@@ -127,7 +130,49 @@ Page({
       wx.showToast({ title: '加载失败', icon: 'none' });
     }
   },
-  
+  async loadHistoryRecords() {
+    this.setData({ historyLoading: true });
+    try {
+        const res = await wx.cloud.callFunction({
+            name: 'getUserData',
+            data: {
+                action: 'getHistoryRecords'
+            }
+        });
+
+        if (res.result && res.result.success) {
+            this.setData({
+                historyList: res.result.records.map(item => ({
+                    ...item,
+                    // 格式化日期，方便显示
+                    displayDate: new Date(item.createdAt).toLocaleString(),
+                })),
+            });
+        } else {
+            console.error('获取历史记录失败:', res.result.message);
+            wx.showToast({
+                title: '加载历史失败',
+                icon: 'none'
+            });
+        }
+    } catch (err) {
+        console.error('调用云函数失败:', err);
+        wx.showToast({
+            title: '网络错误',
+            icon: 'none'
+        });
+    } finally {
+        this.setData({ historyLoading: false });
+    }
+},
+
+// 新增：点击历史记录卡片跳转到详情页
+goToHistoryDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+        url: `/pages/historyDetail/historyDetail?id=${id}`
+    });
+},
   // 刷新历史
   refreshHistory() {
     if (!this.data.historyLoading) {

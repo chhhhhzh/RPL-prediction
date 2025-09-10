@@ -31,45 +31,36 @@
     </view>
 
     <view class="chart-card">
-        <view class="card-header">
-            <text class="chart-title">历史数据与结果</text>
-            <button size="mini" bindtap="refreshHistory">刷新</button>
+      <view class="card-header">
+        <text class="chart-title">历史数据与结果</text>
+        <view class="card-actions">
+          <button size="mini" bindtap="loadHistoryRecords">刷新</button>
+          <button size="mini" bindtap="showClearConfirm">清空</button>
         </view>
-
-        <view wx:if="{{historyLoading}}" class="loading-tip">
-        <icon type="loading" size="40" color="#07C160" />
-        <text>数据加载中...</text>
-        </view>
-
-    <view wx:if="{{historyList.length > 0}}">
-    <scroll-view scroll-y style="height: 400rpx;">
-        <view wx:for="{{historyList}}" wx:key="_id" class="history-item">
-        <view class="history-header">
-            <text class="history-date">{{item.formattedDate}}</text>
-            <text class="history-module">{{item.moduleTitle}}</text>
-        </view>
-        
-        <view class="history-indicators">
-            <!-- 修改为使用shortLabel -->
-            <view wx:for="{{item.indicators}}" wx:key="id" class="indicator-item">
-            <text class="indicator-label">{{item.shortLabel}}：</text>
-            <text class="indicator-value">{{item.value}}{{item.unit}}</text>
+      </view>
+      <view wx:if="{{historyLoading}}" class="loading-tip">
+        <text>正在加载历史记录...</text>
+      </view>
+      <view wx:elif="{{historyList.length > 0}}" class="history-list">
+        <scroll-view scroll-y class="history-scroll">
+          <view class="history-item" wx:for="{{historyList}}" wx:key="_id" bindtap="goToHistoryDetail" data-id="{{item._id}}">
+            <view class="history-header">
+                <text class="history-module">预测记录</text>
+                <text class="history-date">{{item.displayDate}}</text>
             </view>
-        </view>
-        
-        <view class="history-result">
-            预测结果：<text class="{{item.prediction === '高风险' ? 'high-risk' : 'low-risk'}}">
-            {{item.prediction}}
-            </text>
-        </view>
-        </view>
-    </scroll-view>
-    </view>
-  
-    <view wx:else class="empty-tip">
-     <image src="/images/no-data.png" class="empty-icon"></image>
-     <text>暂无历史记录</text>
-    </view>
+            <view class="history-result">
+                预测结果：
+                <text class="{{item.predictionResult.probability >= 0.5 ? 'high-risk' : 'low-risk'}}">
+                    {{item.predictionResult.probability >= 0.5 ? '高风险' : '低风险'}}
+                </text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view wx:else class="empty-tip">
+        <image src="/images/no-data.png" class="empty-icon"></image>
+        <text>暂无历史记录</text>
+      </view>
     </view>
   </view>
 

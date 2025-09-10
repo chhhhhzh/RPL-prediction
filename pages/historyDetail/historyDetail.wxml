@@ -1,0 +1,63 @@
+<nav-bar 
+    title="历史记录详情" 
+    showBack="{{true}}" 
+    showHome="{{true}}"
+></nav-bar>
+
+<view class="container">
+    <view wx:if="{{isLoading}}" class="loading-container">
+        <van-loading type="spinner" size="24px" vertical>正在加载详情...</van-loading>
+    </view>
+
+    <view wx:if="{{isError}}" class="error-container">
+        <text class="error-message">{{errorMessage}}</text>
+        <button class="refresh-button" bindtap="refreshPage">刷新</button>
+    </view>
+
+    <view wx:if="{{!isLoading && !isError && record}}" class="center-wrapper">
+        <view class="detail-card">
+            <view class="result-section">
+                <view class="probability-section">
+                    <text class="probability-label">活产概率</text>
+                    <view class="probability-value">
+                        <text class="value">{{record.predictionResult.probability}}</text>
+                        <text class="percent">%</text>
+                    </view>
+                </view>
+                <view class="ci-section">
+                    <text class="ci-label">可能区间</text>
+                    <text class="ci-value">[{{record.predictionResult.confidenceInterval[0]}}% - {{record.predictionResult.confidenceInterval[1]}}%]</text>
+                </view>
+                <view class="date-section">
+                    <text class="date-label">预测日期：</text>
+                    <text class="date-value">{{record.displayDate}}</text>
+                </view>
+            </view>
+        </view>
+
+        <view class="detail-card input-card">
+            <text class="card-title">您输入的指标</text>
+            <view class="input-list">
+                <block wx:for="{{record.userInput}}" wx:key="label"> <view class="input-item">
+                        <text class="input-label">{{item.label}}</text>
+                        <text class="input-value">{{item.value}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+        
+        <block wx:if="{{record.predictionResult.riskFactors && record.predictionResult.riskFactors.length > 0}}">
+            <view class="detail-card risk-factors-container">
+                <text class="risk-factors-title">⚠️ 潜在风险提示</text>
+                <view class="risk-list">
+                    <block wx:for="{{record.predictionResult.riskFactors}}" wx:key="title">
+                        <view class="risk-item">
+                            <text class="risk-title">{{item.title}}</text>
+                            <text class="risk-tip">{{item.tip}}</text>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </block>
+    </view>
+</view>
