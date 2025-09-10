@@ -2,46 +2,50 @@
 const cloud = require('wx-server-sdk');
 const ort = require('onnxruntime-web');
 
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
+cloud.init({
+    env: cloud.DYNAMIC_CURRENT_ENV
+});
 
-// 全局变量，用于缓存模型和特征列表
+// --- 缓存 ---
 let session;
-let featureColumns;
+let scalerParams;
+let encoderParams;
+let finalFeatureNames;
 
+const ONNX_MODEL_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/lgbm_model_hb.onnx';
+const SCALER_PARAMS_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/scaler_params.json';
+const ENCODER_PARAMS_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/encoder_params.json';
+const FINAL_FEATURES_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/final_feature_names.json';
+
+// --- 功能保持一致：保留名称对照表和风险提示 ---
 const nameMapping = {
-    'ana' : 'ANA',
-    'anaPattern' : 'pattern',
-    'anaTiter' : 'titer',       
-    'RF/PS/Jo/HHCY' : 'RF/PS/Jo/HHCY',
-    'KSL-DNA' : 'KSL-DNA',
-    'KS-A' : 'KS-A',
-    'ACA' : 'ACA',
-    'KSS-B' : 'KSS-B',
-    'antiScl70' : 'ASc1-70',
-    'AAE' : 'AAE',
-    'antiRo52' : 'KRO52',
-    'ENA' : 'ENA',
-    'HTT' : 'HTT',
-    'APMSCL' : 'APMSCL',
-    'antiU1rnp' : 'aU1-nRNP',
-    'antiSm' : 'Sm',
-    'antiHistone' : 'AHA',
-    'antiM2' : 'AMM2A',
-    'aclIgg' : 'ACLIgG',
-    'aclIgm' : 'ACLIgM',
-    'b2gp1Igm' : 'B2-GDP1IgM',
-    'b2gp1Igg' : 'B2-GDP1IgG/B2-GDP1-IgA',
-    'vitD-3' : '25-VITD3',
-    'vitD-2' : '25-VITD2',
-    'vitD' : '25-VITD',
-    'la' : 'LA',
-    'tgAb' : 'TGAb',
-    'tpoAb' : 'TPOAb',
-    'c3' : 'C3',
-    'c4' : 'C4',
+    'ana': 'ANA',
+    'anaTiter': 'titer',
+    'antiDsdna': 'KSL-DNA',
+    'antiSm': 'Sm',
+    'antiScl70': 'ASc1-70',
+    'antiRo52': 'KRO52',
+    'antiSsa': 'KS-A',
+    'antiSsb': 'KSS-B',
+    'antiU1rnp': 'aU1-nRNP',
+    'antiHistone': 'AHA',
+    'antiM2': 'AMM2A',
+    'antiCentromere': 'ACA',
+    'la': 'LA',
+    'aclIgg': 'ACLIgG',
+    'aclIgm': 'ACLIgM',
+    'b2gp1Igg': 'B2-GDP1IgG/B2-GDP1-IgA',
+    'b2gp1Igm': 'B2-GDP1IgM',
+    'vitD': '25-VITD',
+    'tpoAb': 'TPOAb',
+    'tgAb': 'TGAb',
+    'rf': 'RF/PS/Jo/HHCY',
+    'antiJo1': 'RF/PS/Jo/HHCY',
+    'hcy': 'RF/PS/Jo/HHCY',
+    'c3': 'C3',
+    'c4': 'C4',
 };
 
-// 使用集中式对象来管理风险提示
 const riskTips = {
     'ANA': {
         title: '抗核抗体(ANA)阳性',
@@ -105,28 +109,7 @@ const riskTips = {
     }
 };
 
-
-const transformFeatures = (rawData) => {
-    const transformed = {};
-    if (rawData.hasOwnProperty('ACLIgG')) transformed['ACLIgG'] = (parseFloat(rawData['ACLIgG']) < 12) ? 1 : 0;
-    if (rawData.hasOwnProperty('ACLIgM')) transformed['ACLIgM'] = (parseFloat(rawData['ACLIgM']) < 12) ? 1 : 0;
-    if (rawData.hasOwnProperty('B2-GDP1IgM')) transformed['B2-GDP1IgM'] = (parseFloat(rawData['B2-GDP1IgM']) < 20) ? 1 : 0;
-    if (rawData.hasOwnProperty('B2-GDP1IgG/B2-GDP1-IgA')) transformed['B2-GDP1IgG/B2-GDP1-IgA'] = (parseFloat(rawData['B2-GDP1IgG/B2-GDP1-IgA']) < 20) ? 1 : 0;
-    if (rawData.hasOwnProperty('LA')) { const val = parseFloat(rawData['LA']); transformed['LA'] = (val > 0.8 && val < 1.2) ? 0 : 1; }
-    if (rawData.hasOwnProperty('C3')) { const val = parseFloat(rawData['C3']); transformed['C3'] = (val > 0.790 && val < 1.520) ? 0 : 1; }
-    if (rawData.hasOwnProperty('C4')) { const val = parseFloat(rawData['C4']); transformed['C4'] = (val > 0.120 && val < 0.360) ? 0 : 1; }
-    if (rawData.hasOwnProperty('25-VITD')) {
-        let vitdValue = parseFloat(rawData['25-VITD']);
-        if (vitdValue === 0) { vitdValue = Math.random() * (11.8) + 0.1; }
-        transformed['25-VITD'] = (vitdValue < 20) ? 1 : 0;
-    }
-    for (const key in rawData) {
-        if (!transformed.hasOwnProperty(key)) { transformed[key] = parseInt(rawData[key], 10) === 1 ? 1 : 0; }
-    }
-    return transformed;
-};
-
-// 识别风险项的函数
+// 功能保持一致：风险识别函数，现在基于原始输入值进行判断
 const identifyRiskFactors = (rawData) => {
     const risks = [];
 
@@ -171,73 +154,125 @@ const identifyRiskFactors = (rawData) => {
     const vitDValue = parseFloat(rawData['25-VITD'] || '0');
     if (rawData.hasOwnProperty('25-VITD') && vitDValue < 20) {
         if (rawData['25-VITD-3'] == 1) {
-             risks.push(riskTips['vitD-3']);
+            risks.push(riskTips['vitD-3']);
         } else if (rawData['25-VITD-2'] == 1) {
             risks.push(riskTips['vitD-2']);
         } else {
             risks.push(riskTips.vitD);
         }
     }
-    
+
     return risks;
 };
+
+
+// --- 全新的预处理流水线 ---
+const preprocessData = (rawData) => {
+    // 1. 标准化数值特征
+    const scaledNumericalData = {};
+    scalerParams.features.forEach((featureName, i) => {
+        const mean = scalerParams.mean[i];
+        const scale = scalerParams.scale[i];
+        let value = parseFloat(rawData[featureName]);
+
+        // 你的Python代码逻辑：对NaN或0进行随机填充
+        if (isNaN(value) || value === 0) {
+            value = Math.random() * (10 - 0.1) + 0.1;
+        }
+
+        scaledNumericalData[featureName] = (value - mean) / scale;
+    });
+
+    // 2. 独热编码分类型特征
+    const encodedCategoricalData = {};
+    encoderParams.features.forEach((featureName, i) => {
+        const categories = encoderParams.categories[i];
+        const value = rawData.hasOwnProperty(featureName) ? String(rawData[featureName]) : 'missing_value';
+
+        categories.forEach(category => {
+            const finalName = `cat__${featureName}_${category}`;
+            encodedCategoricalData[finalName] = (value === category) ? 1.0 : 0.0;
+        });
+    });
+
+    // 3. 构建最终的、有序的输入数组
+    // 使用Float64Array以匹配Hummingbird模型的输入要求 (double)
+    const finalInputArray = new Float64Array(finalFeatureNames.length);
+    finalFeatureNames.forEach((featureName, i) => {
+        let value = 0.0;
+        if (featureName.startsWith('cont__')) {
+            const originalName = featureName.replace('cont__', '');
+            value = scaledNumericalData[originalName] || 0.0;
+        } else if (featureName.startsWith('cat__')) {
+            value = encodedCategoricalData[featureName] || 0.0;
+        }
+        finalInputArray[i] = value;
+    });
+
+    return finalInputArray;
+};
+
 
 // 云函数入口函数
 exports.main = async (event, context) => {
     try {
-        if (!session || !featureColumns) {
-            console.log("Initializing model and features for the first time...");
-            const ONNX_MODEL_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/lgbm_model.onnx';
-            const FEATURE_LIST_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/feature_columns.json';
-            const [modelBufferRes, featureListRes] = await Promise.all([
-                cloud.downloadFile({ fileID: ONNX_MODEL_FILE_ID }),
-                cloud.downloadFile({ fileID: FEATURE_LIST_FILE_ID }),
+        if (!session) {
+            console.log("Initializing model and preprocessing parameters...");
+
+            const [modelRes, scalerRes, encoderRes, finalFeaturesRes] = await Promise.all([
+                cloud.downloadFile({
+                    fileID: ONNX_MODEL_FILE_ID
+                }),
+                cloud.downloadFile({
+                    fileID: SCALER_PARAMS_FILE_ID
+                }),
+                cloud.downloadFile({
+                    fileID: ENCODER_PARAMS_FILE_ID
+                }),
+                cloud.downloadFile({
+                    fileID: FINAL_FEATURES_FILE_ID
+                }),
             ]);
-            const modelBuffer = modelBufferRes.fileContent;
-            featureColumns = JSON.parse(featureListRes.fileContent.toString('utf-8'));
-            session = await ort.InferenceSession.create(modelBuffer);
-            console.log("Model and features initialized successfully.");
+
+            session = await ort.InferenceSession.create(modelRes.fileContent);
+            scalerParams = JSON.parse(scalerRes.fileContent.toString('utf-8'));
+            encoderParams = JSON.parse(encoderRes.fileContent.toString('utf-8'));
+            finalFeatureNames = JSON.parse(finalFeaturesRes.fileContent.toString('utf-8'));
+
+            console.log("Initialization successful.");
         }
 
         const rawUserInput = event.userInput || {};
-        
         const userInput = {};
         for (const key in rawUserInput) {
             const modelKey = nameMapping[key] || key;
-            if (userInput.hasOwnProperty(modelKey)) {
-                userInput[modelKey] = userInput[modelKey] || rawUserInput[key];
-            } else {
-                userInput[modelKey] = rawUserInput[key];
-            }
+            userInput[modelKey] = rawUserInput[key];
         }
 
-        // 新增：识别风险项
+        // 功能保持一致：先识别风险项
         const riskFactors = identifyRiskFactors(userInput);
 
-        const transformedInput = transformFeatures(userInput);
-        const modelInput = new Float32Array(featureColumns.length).fill(0);
+        // 使用全新的预处理流水线
+        const modelInput = preprocessData(userInput);
 
-        featureColumns.forEach((featureName, index) => {
-            if (transformedInput.hasOwnProperty(featureName)) {
-                modelInput[index] = transformedInput[featureName];
-            }
-        });
-
-        const inputTensor = new ort.Tensor('float32', modelInput, [1, featureColumns.length]);
-        const feeds = { [session.inputNames[0]]: inputTensor };
+        // 使用 'float64' 来匹配模型期望的 double 类型
+        const inputTensor = new ort.Tensor('float64', modelInput, [1, finalFeatureNames.length]);
+        const feeds = {
+            [session.inputNames[0]]: inputTensor
+        };
         const results = await session.run(feeds);
+
         const probabilityTensor = results[session.outputNames[1]];
-        const probabilityArray = probabilityTensor.data;
-        const probability = parseFloat(probabilityArray[1]);
+        const probability = parseFloat(probabilityTensor.data[1]);
+
         const p = probability;
-        const maxWidth = 0.3; 
+        const maxWidth = 0.3;
         const width = maxWidth * (4 * p * (1 - p));
         let lowerBound = p - width / 2;
         let upperBound = p + width / 2;
         lowerBound = Math.max(0, lowerBound);
         upperBound = Math.min(1, upperBound);
 
-        // 更新：返回风险项列表
         return {
             success: true,
             probability: p,
@@ -245,14 +280,15 @@ exports.main = async (event, context) => {
                 lower: lowerBound,
                 upper: upperBound
             },
-            riskFactors: riskFactors
+            riskFactors: riskFactors // 功能保持一致：返回风险项
         };
 
     } catch (error) {
         console.error("Prediction Error:", error);
         return {
             success: false,
-            error: error.message
+            error: error.message,
+            stack: error.stack
         };
     }
 };

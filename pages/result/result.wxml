@@ -41,9 +41,6 @@
                     <view class="risk-list">
                         <block wx:for="{{riskFactors}}" wx:key="id">
                             <view class="risk-item">
-                                <view class="risk-icon">
-                                    <image src="/images/warning.png" class="icon"></image>
-                                </view>
                                 <view class="risk-content">
                                     <text class="risk-title">{{item.title}}</text>
                                     <text class="risk-tip">{{item.tip}}</text>
