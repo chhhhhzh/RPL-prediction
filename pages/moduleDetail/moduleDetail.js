@@ -100,7 +100,7 @@ Page({
       ...(item.inputType === 'select' && { selectedOption: item.option[item.selectedIndex] })
     }));
     try {
-      await db.collection('medicalRecords').add({
+      await db.collection('predictionHistory').add({
         data: {
           _openid: this.data.openid,
           moduleId: this.data.moduleId,

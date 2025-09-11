@@ -17,7 +17,7 @@ const SCALER_PARAMS_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdz
 const ENCODER_PARAMS_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/encoder_params.json';
 const FINAL_FEATURES_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqdzqj9e43361c0-1372646642/final_feature_names.json';
 
-// --- 功能保持一致：保留名称对照表和风险提示 ---
+// --- 名称对照表和风险提示 ---
 const nameMapping = {
     'ana': 'ANA',
     'anaTiter': 'titer',
@@ -109,7 +109,7 @@ const riskTips = {
     }
 };
 
-// 功能保持一致：风险识别函数，现在基于原始输入值进行判断
+// 风险识别函数，现在基于原始输入值进行判断
 const identifyRiskFactors = (rawData) => {
     const risks = [];
 
@@ -215,6 +215,7 @@ const preprocessData = (rawData) => {
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+    const wxContext = cloud.getWXContext(); // 在函数入口获取 WX Context
     try {
         if (!session) {
             console.log("Initializing model and preprocessing parameters...");
@@ -273,15 +274,42 @@ exports.main = async (event, context) => {
         lowerBound = Math.max(0, lowerBound);
         upperBound = Math.min(1, upperBound);
 
-        return {
+        const resultToReturn = {
             success: true,
             probability: p,
             confidenceInterval: {
                 lower: lowerBound,
                 upper: upperBound
             },
-            riskFactors: riskFactors // 功能保持一致：返回风险项
+            riskFactors: riskFactors
         };
+
+        // --- 使用 await 确保历史记录被成功保存后再返回 ---
+        try {
+            console.log("Attempting to save history record...");
+            await cloud.callFunction({
+                name: 'history',
+                data: {
+                    action: 'save',
+                    openid: wxContext.OPENID,
+                    record: {
+                        // 注意：这里我们传递的是经过名称映射后的 userInput
+                        // 这样保存到数据库里的就是模型真正使用的、标准的指标名称
+                        userInput: userInput,
+                        predictionResult: resultToReturn // 保存完整的预测结果
+                    }
+                }
+            });
+            console.log('History saved successfully.');
+        } catch (saveError) {
+            // 即使保存失败，也不应该影响主流程的返回
+            // 我们只在后台记录这个错误，以便排查
+            console.error('CRITICAL: Failed to save history, but proceeding to return result.', saveError);
+        }
+        // --- 修改结束 ---
+
+        // 返回预测结果给前端
+        return resultToReturn;
 
     } catch (error) {
         console.error("Prediction Error:", error);
