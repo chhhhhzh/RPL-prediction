@@ -23,7 +23,7 @@
                     </view>
                 </view>
                 <view class="ci-section">
-                    <text class="ci-label">预测置信区间</text>
+                    <text class="ci-label">活产概率可能区间</text>
                     <text class="ci-value">[{{resultData.confidenceInterval[0]}}% - {{resultData.confidenceInterval[1]}}%]</text>
                 </view>
             </view>
@@ -31,7 +31,7 @@
             <view class="info-section">
                 <text class="info-title">结果解读</text>
                 <text class="info-text">
-                    本预测结果基于您提供的指标，并通过机器学习模型计算得出，仅供参考，不能替代专业医疗建议。置信区间反映了模型对当前预测的把握程度，区间越窄表示把握越大。
+                    本预测结果基于您提供的指标，并通过机器学习模型计算得出，仅供参考，不能替代专业医疗建议。活产概率可能区间反映了模型当前有95%的把握认为您的活产概率落在该区间，区间越窄表示预测越精确。
                 </text>
             </view>
 

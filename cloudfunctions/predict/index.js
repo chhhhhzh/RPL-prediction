@@ -21,6 +21,7 @@ const FINAL_FEATURES_FILE_ID = 'cloud://cloud1-2gqdzqj9e43361c0.636c-cloud1-2gqd
 const nameMapping = {
     'ana': 'ANA',
     'anaTiter': 'titer',
+    'anaPattern': 'pattern',
     'antiDsdna': 'KSL-DNA',
     'antiSm': 'Sm',
     'antiScl70': 'ASc1-70',
@@ -37,6 +38,8 @@ const nameMapping = {
     'b2gp1Igg': 'B2-GDP1IgG/B2-GDP1-IgA',
     'b2gp1Igm': 'B2-GDP1IgM',
     'vitD': '25-VITD',
+    'vitD2': '25-VITD2',
+    'vitD3': '25-VITD3',
     'tpoAb': 'TPOAb',
     'tgAb': 'TGAb',
     'rf': 'RF/PS/Jo/HHCY',
@@ -44,6 +47,11 @@ const nameMapping = {
     'hcy': 'RF/PS/Jo/HHCY',
     'c3': 'C3',
     'c4': 'C4',
+    // 添加其他可能的映射
+    'aae': 'AAE',
+    'ena': 'ENA',
+    'htt': 'HTT',
+    'apmscl': 'APMSCL'
 };
 
 const riskTips = {
@@ -165,9 +173,53 @@ const identifyRiskFactors = (rawData) => {
     return risks;
 };
 
+// 定义训练时使用的特征列表（保持与训练一致）
+const continuousFeatures = ['titer', 'ACLIgG', 'ACLIgM', 'B2-GDP1IgM', 'B2-GDP1IgG/B2-GDP1-IgA', '25-VITD3', '25-VITD2', '25-VITD', 'LA', 'C3', 'C4'];
+const categoricalFeatures = ['ANA', 'KSL-DNA', 'KS-A', 'ACA', 'KSS-B', 'ASc1-70', 'AAE', 'KRO52', 'ENA', 'HTT', 'APMSCL', 'aU1-nRNP', 'Sm', 'AHA', 'AMM2A', 'TGAb', 'TPOAb', 'pattern', 'RF/PS/Jo/HHCY'];
 
-// --- 全新的预处理流水线 ---
+// 定义特征默认值
+const continuousDefaults = {
+    'titer': 100,
+    'ACLIgG': 12,
+    'ACLIgM': 15,
+    'B2-GDP1IgM': 12,
+    'B2-GDP1IgG/B2-GDP1-IgA': 18,
+    '25-VITD3': 20,
+    '25-VITD2': 1.00,
+    '25-VITD': 25,
+    'LA': 1.00,
+    'C3': 1.00,
+    'C4': 0.20
+};
+
+const categoricalDefaults = {
+    // 二元特征：默认为阴性 (0)
+    'ANA': '0',
+    'KSL-DNA': '0',
+    'KS-A': '0',
+    'ACA': '0',
+    'KSS-B': '0',
+    'ASc1-70': '0',
+    'AAE': '0',
+    'KRO52': '0',
+    'ENA': '0',
+    'HTT': '0',
+    'APMSCL': '0',
+    'aU1-nRNP': '0',
+    'Sm': '0',
+    'AHA': '0',
+    'AMM2A': '0',
+    'TGAb': '0',
+    'TPOAb': '0',
+    // 多元特征：默认为正常 (0)
+    'pattern': '0',
+    'RF/PS/Jo/HHCY': '0'
+};
+
+// --- 修复的预处理流水线 ---
 const preprocessData = (rawData) => {
+    console.log('开始预处理，原始数据:', rawData);
+    
     // 1. 标准化数值特征
     const scaledNumericalData = {};
     scalerParams.features.forEach((featureName, i) => {
@@ -175,19 +227,32 @@ const preprocessData = (rawData) => {
         const scale = scalerParams.scale[i];
         let value = parseFloat(rawData[featureName]);
 
-        // 你的Python代码逻辑：对NaN或0进行随机填充
+        // 【关键修复】使用特定的默认值而不是随机值进行填充
         if (isNaN(value) || value === 0) {
-            value = Math.random() * (10 - 0.1) + 0.1;
+            value = continuousDefaults[featureName] || 1.0; // 使用特定默认值
+            console.log(`特征 ${featureName} 使用默认值: ${value}`);
         }
 
         scaledNumericalData[featureName] = (value - mean) / scale;
     });
 
+    console.log('标准化后的数值数据:', scaledNumericalData);
+
     // 2. 独热编码分类型特征
     const encodedCategoricalData = {};
     encoderParams.features.forEach((featureName, i) => {
         const categories = encoderParams.categories[i];
-        const value = rawData.hasOwnProperty(featureName) ? String(rawData[featureName]) : 'missing_value';
+        
+        let value;
+        if (rawData.hasOwnProperty(featureName)) {
+            value = String(rawData[featureName]);
+        } else {
+            // 使用特定的默认值
+            value = categoricalDefaults[featureName] || 'missing_value';
+            console.log(`特征 ${featureName} 使用默认值: ${value}`);
+        }
+
+        console.log(`处理特征 ${featureName}, 值: ${value}, 类型: ${typeof value}`);
 
         categories.forEach(category => {
             const finalName = `cat__${featureName}_${category}`;
@@ -195,8 +260,9 @@ const preprocessData = (rawData) => {
         });
     });
 
+    console.log('编码后的分类数据样例:', Object.keys(encodedCategoricalData).slice(0, 10));
+
     // 3. 构建最终的、有序的输入数组
-    // 使用Float64Array以匹配Hummingbird模型的输入要求 (double)
     const finalInputArray = new Float64Array(finalFeatureNames.length);
     finalFeatureNames.forEach((featureName, i) => {
         let value = 0.0;
@@ -209,13 +275,13 @@ const preprocessData = (rawData) => {
         finalInputArray[i] = value;
     });
 
+    console.log('最终输入数组长度:', finalInputArray.length);
     return finalInputArray;
 };
 
-
 // 云函数入口函数
 exports.main = async (event, context) => {
-    const wxContext = cloud.getWXContext(); // 在函数入口获取 WX Context
+    const wxContext = cloud.getWXContext();
     try {
         if (!session) {
             console.log("Initializing model and preprocessing parameters...");
@@ -244,11 +310,15 @@ exports.main = async (event, context) => {
         }
 
         const rawUserInput = event.userInput || {};
+        console.log('接收到的原始输入:', rawUserInput);
+        
         const userInput = {};
         for (const key in rawUserInput) {
             const modelKey = nameMapping[key] || key;
             userInput[modelKey] = rawUserInput[key];
         }
+        
+        console.log('映射后的输入:', userInput);
 
         // 功能保持一致：先识别风险项
         const riskFactors = identifyRiskFactors(userInput);
@@ -284,7 +354,7 @@ exports.main = async (event, context) => {
             riskFactors: riskFactors
         };
 
-        // --- 使用 await 确保历史记录被成功保存后再返回 ---
+        // 保存历史记录
         try {
             console.log("Attempting to save history record...");
             await cloud.callFunction({
@@ -293,22 +363,16 @@ exports.main = async (event, context) => {
                     action: 'save',
                     openid: wxContext.OPENID,
                     record: {
-                        // 注意：这里我们传递的是经过名称映射后的 userInput
-                        // 这样保存到数据库里的就是模型真正使用的、标准的指标名称
                         userInput: userInput,
-                        predictionResult: resultToReturn // 保存完整的预测结果
+                        predictionResult: resultToReturn
                     }
                 }
             });
             console.log('History saved successfully.');
         } catch (saveError) {
-            // 即使保存失败，也不应该影响主流程的返回
-            // 我们只在后台记录这个错误，以便排查
             console.error('CRITICAL: Failed to save history, but proceeding to return result.', saveError);
         }
-        // --- 修改结束 ---
 
-        // 返回预测结果给前端
         return resultToReturn;
 
     } catch (error) {

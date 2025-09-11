@@ -86,22 +86,80 @@ Page({
         const userInput = {};
         if (!predictionData) return userInput;
 
+        // 前端到后端的键名映射，确保与云函数中的 nameMapping 一致
+        const frontendToBackendMapping = {
+            'ana': 'ana',
+            'anaTiter': 'anaTiter', 
+            'anaPattern': 'anaPattern',
+            'antiDsdna': 'antiDsdna',
+            'antiSm': 'antiSm',
+            'antiScl70': 'antiScl70',
+            'antiRo52': 'antiRo52',
+            'antiSsa': 'antiSsa',
+            'antiSsb': 'antiSsb',
+            'antiU1rnp': 'antiU1rnp',
+            'antiHistone': 'antiHistone',
+            'antiM2': 'antiM2',
+            'antiCentromere': 'antiCentromere',
+            'la': 'la',
+            'aclIgg': 'aclIgg',
+            'aclIgm': 'aclIgm',
+            'b2gp1Igg': 'b2gp1Igg',
+            'b2gp1Igm': 'b2gp1Igm',
+            'vitD': 'vitD',
+            'vitD2': 'vitD2',
+            'vitD3': 'vitD3',
+            'tpoAb': 'tpoAb',
+            'tgAb': 'tgAb',
+            'rf': 'rf',
+            'antiJo1': 'antiJo1',
+            'hcy': 'hcy',
+            'c3': 'c3',
+            'c4': 'c4',
+            // 添加其他可能的指标映射
+            'pattern': 'anaPattern',
+            'titer': 'anaTiter',
+            // 根据你的actual data structure添加更多映射
+            'aae': 'aae',
+            'ena': 'ena',
+            'htt': 'htt',
+            'apmscl': 'apmscl'
+        };
+
         for (const moduleId in predictionData) {
             const module = predictionData[moduleId];
             for (const indicator of module.indicators) {
                 // 只处理有值的指标
-                if (indicator.value !== null && indicator.value !== '') {
+                if (indicator.value !== null && indicator.value !== '' && indicator.value !== undefined) {
+                    
+                    // 使用映射获取正确的后端键名
+                    const backendKey = frontendToBackendMapping[indicator.id] || indicator.id;
+                    
                     // 如果是下拉选择类型
                     if (indicator.inputType === 'select') {
-                        // "阳性" 转换为 1, "阴性" 或其他选项（如"正常"）转换为 0
-                        userInput[indicator.id] = (indicator.value === '阳性' || indicator.value === 'RF' || indicator.value === 'PS' || indicator.value === 'Jo' || indicator.value === 'HHCY') ? 1 : 0;
+                        // 确保所有分类特征都转换为字符串
+                        if (indicator.value === '阳性' || indicator.value === 'RF' || 
+                            indicator.value === 'PS' || indicator.value === 'Jo' || 
+                            indicator.value === 'HHCY') {
+                            userInput[backendKey] = '1';  // 转换为字符串
+                        } else {
+                            userInput[backendKey] = '0';  // 转换为字符串
+                        }
                     } else {
-                        // 其他文本输入类型，直接使用其值
-                        userInput[indicator.id] = indicator.value;
+                        // 数值类型保持为数值，但确保是有效数值
+                        const numValue = parseFloat(indicator.value);
+                        if (!isNaN(numValue)) {
+                            userInput[backendKey] = numValue;
+                        } else {
+                            // 如果不是有效数值，但有值，也按字符串处理
+                            userInput[backendKey] = String(indicator.value);
+                        }
                     }
                 }
             }
         }
+        
+        console.log('前端准备的输入数据:', userInput);
         return userInput;
     },
 
