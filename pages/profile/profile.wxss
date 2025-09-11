@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: center;
     padding: 40rpx 0;
-    background-color: #fff7ed;
+    background-color: #fff;
 }
 
 .loading-tip text {
