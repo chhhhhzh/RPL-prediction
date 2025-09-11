@@ -126,6 +126,33 @@ Page({
             'apmscl': 'apmscl'
         };
 
+        // Pattern 值映射（从显示名称到数值）
+        const patternValueMapping = {
+            '正常': '0',
+            '颗粒型': '1',
+            '胞浆颗粒型': '2',
+            '核颗粒型': '3',
+            '核仁型': '4',
+            '核均质型': '5',
+            '染色体型': '6',
+            '高尔基型': '7',
+            '无核型': '8',
+            '核少点型': '9',
+            '核膜型': '10',
+            '核着丝点型': '11',
+            '线粒体型': '12',
+            '斑点型': '13'
+        };
+
+        // RF/PS/Jo/HHCY 值映射（从显示名称到数值）
+        const rfValueMapping = {
+            '无': '0',
+            'RF': '1',
+            'PS': '2',
+            'Jo': '3',
+            'HHCY': '4'
+        };
+
         for (const moduleId in predictionData) {
             const module = predictionData[moduleId];
             for (const indicator of module.indicators) {
@@ -137,13 +164,23 @@ Page({
                     
                     // 如果是下拉选择类型
                     if (indicator.inputType === 'select') {
-                        // 确保所有分类特征都转换为字符串
-                        if (indicator.value === '阳性' || indicator.value === 'RF' || 
-                            indicator.value === 'PS' || indicator.value === 'Jo' || 
-                            indicator.value === 'HHCY') {
-                            userInput[backendKey] = '1';  // 转换为字符串
-                        } else {
-                            userInput[backendKey] = '0';  // 转换为字符串
+                        
+                        // 特殊处理 pattern 特征
+                        if (indicator.id === 'pattern' || indicator.id === 'anaPattern') {
+                            userInput[backendKey] = patternValueMapping[indicator.value] || '0';
+                        }
+                        // 特殊处理 RF/PS/Jo/HHCY 特征
+                        else if (indicator.id === 'rf' || indicator.id === 'RF/PS/Jo/HHCY') {
+                            userInput[backendKey] = rfValueMapping[indicator.value] || '0';
+                        }
+                        // 处理其他二元特征
+                        else {
+                            // 确保所有分类特征都转换为字符串
+                            if (indicator.value === '阳性') {
+                                userInput[backendKey] = '1';  // 转换为字符串
+                            } else {
+                                userInput[backendKey] = '0';  // 转换为字符串
+                            }
                         }
                     } else {
                         // 数值类型保持为数值，但确保是有效数值
