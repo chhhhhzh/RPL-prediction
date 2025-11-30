@@ -1,25 +1,57 @@
-<view>
-  <nav-bar title="预测报告" showBack="{{true}}"></nav-bar>
-  <view class="container bg-orange-50">
-    <view class="header">
-      <text class="header-title">本次妊娠成功生育概率</text>
-      <text class="probability">{{mockResult.probability}}%</text>
-      <text class="confidence">置信区间: {{mockResult.confidenceInterval[0]}}% - {{mockResult.confidenceInterval[1]}}%</text>
+<view class="container">
+    <view wx:if="{{isLoading}}" class="loading-container">
+        <van-loading type="spinner" size="24px" vertical>正在为您进行智能预测...</van-loading>
     </view>
 
-    <view class="factors-section">
-      <text class="section-title">主要影响因素分析</text>
-      <view class="factors-list">
-        <block wx:for="{{mockResult.influencingFactors}}" wx:key="name">
-          <view class="factor-card">
-            <view class="factor-header">
-              <text class="factor-name">{{item.name}}</text>
-              <text class="factor-effect {{item.effect.includes('正面') ? 'positive' : 'negative'}}">{{item.effect}}</text>
-            </view>
-            <text class="factor-reason">{{item.reason}}</text>
-          </view>
-        </block>
-      </view>
+    <view wx:if="{{isError && !isLoading}}" class="error-container">
+        <text class="error-title">预测失败</text>
+        <text class="error-message">{{errorMessage}}</text>
+        <view class="button-group">
+            <button class="button-base retry-button" bindtap="onRetry">点击重试</button>
+            <navigator url="/pages/prediction/prediction" open-type="navigateBack" class="button-base back-button">返回修改</navigator>
+        </view>
     </view>
-  </view>
+
+    <view wx:if="{{!isLoading && !isError && resultData}}" class="center-wrapper">
+        <view class="result-container">
+            <view class="result-card">
+                <view class="probability-section">
+                    <text class="probability-label">活产概率</text>
+                    <view class="probability-value">
+                        <text class="value">{{resultData.probability}}</text>
+                        <text class="percent">%</text>
+                    </view>
+                </view>
+                <view class="ci-section">
+                    <text class="ci-label">活产概率可能区间</text>
+                    <text class="ci-value">[{{resultData.confidenceInterval[0]}}% - {{resultData.confidenceInterval[1]}}%]</text>
+                </view>
+            </view>
+
+            <view class="info-section">
+                <text class="info-title">结果解读</text>
+                <text class="info-text">
+                    本预测结果基于您提供的指标，并通过机器学习模型计算得出，仅供参考，不能替代专业医疗建议。活产概率可能区间反映了模型当前有95%的把握认为您的活产概率落在该区间，区间越窄表示预测越精确。
+                </text>
+            </view>
+
+            <block wx:if="{{riskFactors && riskFactors.length > 0}}">
+                <view class="risk-factors-container">
+                    <text class="risk-factors-title">⚠️ 潜在风险提示</text>
+                    <view class="risk-list">
+                        <block wx:for="{{riskFactors}}" wx:key="id">
+                            <view class="risk-item">
+                                <view class="risk-content">
+                                    <text class="risk-title">{{item.title}}</text>
+                                    <text class="risk-tip">{{item.tip}}</text>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                </view>
+            </block>
+
+            <navigator url="/pages/prediction/prediction" open-type="navigateBack" class="back-button-bottom">返回上一页</navigator>
+        </view>
+    </view>
 </view>

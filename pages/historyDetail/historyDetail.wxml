@@ -1,0 +1,48 @@
+<view class="page-container">
+    <nav-bar title="历史记录详情" showBack="{{true}}" showHome="{{true}}"></nav-bar>
+
+    <view class="content-area">
+        <block wx:if="{{historyRecord}}">
+            <view class="card">
+                <view class="header">
+                    <text class="date">{{historyRecord.formattedDate}} {{historyRecord.formattedTime}}</text>
+                </view>
+                <view class="result-summary">
+                    <view class="result-item">
+                        <text class="result-label">活产概率</text>
+                        <text class="result-value probability">{{displayData.probability}}%</text>
+                    </view>
+                    <view class="result-item">
+                        <text class="result-label">95%置信区间</text>
+                        <text class="result-value">{{displayData.confidenceInterval}}</text>
+                    </view>
+                </view>
+            </view>
+
+            <view class="card" wx:if="{{historyRecord.predictionResult.riskFactors.length > 0}}">
+                <view class="card-title">风险提示</view>
+                <view class="risk-list">
+                    <view class="risk-item" wx:for="{{historyRecord.predictionResult.riskFactors}}" wx:key="title">
+                        <text class="risk-title">{{item.title}}</text>
+                        <text class="risk-tip">{{item.tip}}</text>
+                    </view>
+                </view>
+            </view>
+            
+            <view class="card">
+                <view class="card-title">本次输入指标</view>
+                <view class="input-list">
+                    <view class="empty-input" wx:if="{{!historyRecord.userInput || historyRecord.userInput.length === 0}}">
+                        本次预测未输入任何指标
+                    </view>
+                    <view class="input-item" wx:for="{{historyRecord.userInput}}" wx:key="id">
+                        <text class="input-label">{{indicatorLabels[item.id] || item.id}}</text>
+                        <text class="input-value">{{item.displayValue || item.value}}</text>
+                    </view>
+                </view>
+            </view>
+
+            <button class="back-btn" bindtap="goBack">返回上一页</button>
+        </block>
+    </view>
+</view>

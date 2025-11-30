@@ -12,6 +12,7 @@
                 上传检验报告
             </button>
             <button class="button primary" bindtap="handlePredict">开始预测</button>
+            <button class="clear-btn" bindtap="handleClearData">清空数据</button>
         </view>
     </view>
 </view>
