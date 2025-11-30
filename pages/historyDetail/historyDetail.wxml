@@ -9,7 +9,7 @@
                 </view>
                 <view class="result-summary">
                     <view class="result-item">
-                        <text class="result-label">活产概率</text>
+                        <text class="result-label">流产概率</text>
                         <text class="result-value probability">{{displayData.probability}}%</text>
                     </view>
                     <view class="result-item">

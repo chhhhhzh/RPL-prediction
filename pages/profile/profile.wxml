@@ -32,7 +32,7 @@
                         </view>
                         <view class="history-item-right">
                             <view class="probability-badge" style="background-color: {{item.badgeBgColor}}; color: {{item.badgeColor}};">
-                                活产率: {{item.displayProbability}}%
+                                活产率: {{100-item.displayProbability}}%
                             </view>
                             <view class="arrow-right">›</view>
                         </view>
