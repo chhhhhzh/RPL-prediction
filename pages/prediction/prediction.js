@@ -20,7 +20,12 @@ Page({
             });
         } else {
             // 如果全局数据意外丢失，则重新初始化
-            app.initPredictionData();
+            if (app.initPredictionData) {
+                app.initPredictionData();
+            } else {
+                // 兜底初始化，防止 app.js 中没有定义该方法
+                app.globalData.predictionData = JSON.parse(JSON.stringify(modulesConfig));
+            }
             this.setData({
                 modules: Object.values(app.globalData.predictionData)
             });
@@ -42,7 +47,13 @@ Page({
             success: (res) => {
                 if (res.confirm) {
                     // 调用 app.js 中的全局清空函数
-                    app.clearPredictionData();
+                    if (app.clearPredictionData) {
+                        app.clearPredictionData();
+                    } else {
+                        // 兜底清空
+                        app.globalData.predictionData = JSON.parse(JSON.stringify(modulesConfig));
+                    }
+                    
                     // 重新从已清空的全局数据加载到当前页面，刷新界面
                     this.setData({
                         modules: Object.values(app.globalData.predictionData)
@@ -80,168 +91,83 @@ Page({
         });
     },
 
-    // 数据准备函数，负责将全局数据转换为干净的 key-value 对象 ---
+    // --- 【更新】的数据准备函数 ---
     _prepareInputData() {
         const predictionData = app.globalData.predictionData;
         const userInput = {};
         if (!predictionData) return userInput;
 
-        // 前端到后端的键名映射，确保与云函数中的 nameMapping 一致
-        const frontendToBackendMapping = {
-            'ana': 'ana',
-            'anaTiter': 'anaTiter', 
-            'anaPattern': 'anaPattern',
-            'antiDsdna': 'antiDsdna',
-            'antiSm': 'antiSm',
-            'antiScl70': 'antiScl70',
-            'antiRo52': 'antiRo52',
-            'antiSsa': 'antiSsa',
-            'antiSsb': 'antiSsb',
-            'antiU1rnp': 'antiU1rnp',
-            'antiHistone': 'antiHistone',
-            'antiM2': 'antiM2',
-            'antiCentromere': 'antiCentromere',
-            'la': 'la',
-            'aclIgg': 'aclIgg',
-            'aclIgm': 'aclIgm',
-            'b2gp1Igg': 'b2gp1Igg',
-            'b2gp1Igm': 'b2gp1Igm',
-            'vitD': 'vitD',
-            'vitD2': 'vitD2',
-            'vitD3': 'vitD3',
-            'tpoAb': 'tpoAb',
-            'tgAb': 'tgAb',
-            'rf': 'rf',
-            'antiJo1': 'antiJo1',
-            'hcy': 'hcy',
-            'c3': 'c3',
-            'c4': 'c4',
-            // 添加其他可能的指标映射
-            'pattern': 'anaPattern',
-            'titer': 'anaTiter',
-            // 根据你的actual data structure添加更多映射
-            'aae': 'aae',
-            'ena': 'ena',
-            'htt': 'htt',
-            'apmscl': 'apmscl'
-        };
-
-        // Pattern 值映射（从显示名称到数值）
-        const patternValueMapping = {
-            '正常': '0',
-            '颗粒型': '1',
-            '胞浆颗粒型': '2',
-            '核颗粒型': '3',
-            '核仁型': '4',
-            '核均质型': '5',
-            '染色体型': '6',
-            '高尔基型': '7',
-            '无核型': '8',
-            '核少点型': '9',
-            '核膜型': '10',
-            '核着丝点型': '11',
-            '线粒体型': '12',
-            '斑点型': '13'
-        };
-
-        // RF/PS/Jo/HHCY 值映射（从显示名称到数值）
-        const rfValueMapping = {
-            '无': '0',
-            'RF': '1',
-            'PS': '2',
-            'Jo': '3',
-            'HHCY': '4'
-        };
-
+        // 【核心修改】：
+        // 不再使用硬编码的映射表。
+        // 因为新的 index.js (云函数) 和 data.js 已经设计为 ID 对应。
+        // 云函数会根据 data.js 中的 id 直接查找对应的模型特征，并在云端处理文本到数值的转换（如 '阳性'->1, '颗粒型'->1）。
+        
         for (const moduleId in predictionData) {
             const module = predictionData[moduleId];
-            for (const indicator of module.indicators) {
-                // 只处理有值的指标
-                if (indicator.value !== null && indicator.value !== '' && indicator.value !== undefined) {
-                    
-                    // 使用映射获取正确的后端键名
-                    const backendKey = frontendToBackendMapping[indicator.id] || indicator.id;
-                    
-                    // 如果是下拉选择类型
-                    if (indicator.inputType === 'select') {
-                        
-                        // 特殊处理 pattern 特征
-                        if (indicator.id === 'pattern' || indicator.id === 'anaPattern') {
-                            userInput[backendKey] = patternValueMapping[indicator.value] || '0';
-                        }
-                        // 特殊处理 RF/PS/Jo/HHCY 特征
-                        else if (indicator.id === 'rf' || indicator.id === 'RF/PS/Jo/HHCY') {
-                            userInput[backendKey] = rfValueMapping[indicator.value] || '0';
-                        }
-                        // 处理其他二元特征
-                        else {
-                            // 确保所有分类特征都转换为字符串
-                            if (indicator.value === '阳性') {
-                                userInput[backendKey] = '1';  // 转换为字符串
-                            } else {
-                                userInput[backendKey] = '0';  // 转换为字符串
-                            }
-                        }
-                    } else {
-                        // 数值类型保持为数值，但确保是有效数值
-                        const numValue = parseFloat(indicator.value);
-                        if (!isNaN(numValue)) {
-                            userInput[backendKey] = numValue;
-                        } else {
-                            // 如果不是有效数值，但有值，也按字符串处理
-                            userInput[backendKey] = String(indicator.value);
-                        }
+            if (module.indicators) {
+                for (const indicator of module.indicators) {
+                    // 只处理有输入值的指标
+                    if (indicator.value !== null && indicator.value !== '' && indicator.value !== undefined) {
+                        // 直接使用 indicator.id 作为键名传递给云函数
+                        // 云函数中的 keyMap 会负责将其映射到中文特征名
+                        userInput[indicator.id] = indicator.value;
                     }
                 }
             }
         }
-        
-        console.log('前端准备的输入数据:', userInput);
+
         return userInput;
     },
 
-    // OCR
+    // OCR 识别结果合并 (保持原有逻辑)
     _mergeOcrData(ocrData) {
         let currentData = JSON.parse(JSON.stringify(modulesConfig));
+        // 如果全局已有数据，基于全局数据更新，防止覆盖用户手动修改
+        if(app.globalData.predictionData) {
+             currentData = app.globalData.predictionData;
+        }
+
+        const updatedFields = [];
+
         for (const moduleId in ocrData) {
+            // 确保模块存在
             if (currentData[moduleId]) {
                 ocrData[moduleId].indicators.forEach(newIndicator => {
                     const currentIndicator = currentData[moduleId].indicators.find(ind => ind.id === newIndicator.id);
+                    
+                    // 逻辑：如果当前没有值，或者是OCR识别出来的新值，则填入
+                    // 这里采用简单的覆盖策略：如果 OCR 有值，就覆盖（或者您可以改为只填补空缺）
+                    // 原代码逻辑：if (currentIndicator && (!currentIndicator.value || currentIndicator.value === '') && newIndicator.value)
+                    // 保持原代码逻辑：只填补空缺
                     if (currentIndicator && (!currentIndicator.value || currentIndicator.value === '') && newIndicator.value) {
                         currentIndicator.value = newIndicator.value;
+                        updatedFields.push(currentIndicator.label);
                     }
                 });
             }
         }
+
         app.globalData.predictionData = currentData;
+        
         this.setData({
             modules: Object.values(app.globalData.predictionData)
         });
-        const updatedFields = [];
-        for (const moduleId in ocrData) {
-            if (modulesConfig[moduleId]) {
-                ocrData[moduleId].indicators.forEach(newIndicator => {
-                    const originalIndicator = modulesConfig[moduleId].indicators.find(ind => ind.id === newIndicator.id);
-                    if (originalIndicator && newIndicator.value) {
-                        updatedFields.push(originalIndicator.label);
-                    }
-                });
-            }
-        }
+
         if (updatedFields.length > 0) {
             wx.showToast({
-                title: `已补充：${updatedFields.join('、')}`,
+                title: `已补充：${updatedFields.slice(0, 3).join('、')}${updatedFields.length > 3 ? '等' : ''}`,
                 icon: 'none',
                 duration: 3000
             });
         } else {
             wx.showToast({
-                title: '未补充任何新数据',
+                title: '未识别到有效新数据',
                 icon: 'none',
                 duration: 2000
             });
         }
     },
+
     _processFile(tempFilePath, fileName) {
         wx.showLoading({
             title: '正在上传并识别...',
@@ -267,7 +193,7 @@ Page({
                         } else {
                             console.error('云函数识别失败，返回结果：', ocrRes);
                             wx.showToast({
-                                title: result.message || '识别失败',
+                                title: (result && result.message) || '识别失败',
                                 icon: 'none'
                             });
                         }
@@ -292,6 +218,7 @@ Page({
             }
         });
     },
+
     handleUpload() {
         wx.showActionSheet({
             itemList: [
