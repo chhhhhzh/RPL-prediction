@@ -222,10 +222,18 @@ Page({
 
     // --- 你原有的其他函数保持不变 ---
     onChooseAvatar(e) {
-        this.setData({
-            tempAvatarUrl: e.detail.avatarUrl,
-            isAvatarChosen: true,
-        });
+        const avatarUrl = e.detail.avatarUrl;
+        if (avatarUrl) {
+            this.setData({
+                tempAvatarUrl: avatarUrl,
+                isAvatarChosen: true,
+            });
+        } else {
+            wx.showToast({
+                title: '头像选择失败，请重试',
+                icon: 'none'
+            });
+        }
     },
     onNicknameInput(e) {
         this.setData({
