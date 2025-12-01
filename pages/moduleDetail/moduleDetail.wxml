@@ -1,4 +1,3 @@
-<!-- pages/moduleDetail/moduleDetail.wxml -->
 <view class="page-wrapper">
   <nav-bar title="{{module.title}}" showBack="{{true}}" showHome="{{true}}"></nav-bar>
   
@@ -7,18 +6,30 @@
       <block wx:for="{{module.indicators}}" wx:key="id">
         <view class="form-item">
           <text class="form-label">{{item.label}}</text>
-          <picker 
-            wx:if="{{item.inputType === 'select'}}"
-            mode="selector" 
-            range="{{item.option}}"
-            value="{{item.selectedIndex}}"
-            bindchange="handleSelectChange"
-            data-indicatorid="{{item.id}}"
-            >
-            <view class="picker-display {{item.selectedIndex === null ? 'placeholder' : ''}}">
-                {{item.selectedIndex !== null ? item.option[item.selectedIndex] : item.placeholder}}
-            </view>
-          </picker>
+          
+          <view wx:if="{{item.inputType === 'select'}}" class="select-wrapper">
+            <picker 
+              mode="selector" 
+              range="{{item.option}}"
+              value="{{item.selectedIndex !== null ? item.selectedIndex : 0}}"
+              bindchange="handleSelectChange"
+              data-indicatorid="{{item.id}}"
+              >
+              <view class="picker-display {{item.selectedIndex === null ? 'placeholder' : ''}}">
+                  {{item.selectedIndex !== null ? item.option[item.selectedIndex] : item.placeholder}}
+              </view>
+            </picker>
+            <icon 
+              wx:if="{{item.selectedIndex !== null}}" 
+              class="clear-icon" 
+              type="clear" 
+              size="18" 
+              color="#c9cdd4"
+              catchtap="clearSelectValue"
+              data-indicatorid="{{item.id}}"
+            ></icon>
+          </view>
+
           <input wx:else class="form-input" 
                  type="text" 
                  placeholder="{{item.placeholder}}" 

@@ -1,47 +1,47 @@
 .container {
     padding: 30rpx;
-  }
-  
-  .chart-card {
+}
+
+.chart-card {
     background-color: #fff;
     padding: 30rpx;
     border-radius: 16rpx;
     margin-bottom: 30rpx;
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
-  }
-  
-  .loading-tip {
+}
+
+.loading-tip {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40rpx 0;
-    background-color: #fff; /* 背景色可根据需求调整 */
-  }
+    background-color: #fff;
+}
 
-  .loading-tip text {
+.loading-tip text {
     font-size: 28rpx;
     color: #999;
-  }
-  
-  .chart-title {
+}
+
+.chart-title {
     font-size: 36rpx;
     font-weight: bold;
     color: #333;
-  }
-  
-  .chart-container {
+}
+
+.chart-container {
     width: 100%;
     height: 500rpx;
     margin-top: 20rpx;
-  }
-  
-  ec-canvas {
+}
+
+ec-canvas {
     width: 100%;
     height: 100%;
-  }
-  
-  .user-info-card {
+}
+
+.user-info-card {
     display: flex;
     align-items: center;
     padding: 40rpx;
@@ -49,67 +49,67 @@
     border-radius: 16rpx;
     margin-bottom: 30rpx;
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
-  }
-  
-  .user-info-card > .avatar { 
+}
+
+.user-info-card>.avatar {
     width: 128rpx;
     height: 128rpx;
     object-fit: cover;
     border-radius: 8rpx;
-  }
-  
-  .nickname {
+}
+
+.nickname {
     font-size: 40rpx;
     font-weight: bold;
     color: #333;
     margin-left: 30rpx;
-  }
-  
-  .card-header {
+}
+
+.card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10rpx;
-  }
-  
-  .picker-display {
+}
+
+.picker-display {
     display: flex;
     align-items: center;
     background-color: #f7f7f7;
     padding: 10rpx 20rpx;
     border-radius: 10rpx;
-  }
-  
-  .picker-text {
+}
+
+.picker-text {
     font-size: 28rpx;
     color: #333;
     margin-right: 10rpx;
-  }
-  
-  .picker-arrow {
+}
+
+.picker-arrow {
     width: 32rpx;
     height: 32rpx;
-  }
-  
-  .auth-container {
+}
+
+.auth-container {
     padding: 80rpx 60rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .auth-header {
+}
+
+.auth-header {
     text-align: center;
     margin-bottom: 60rpx;
-  }
-  
-  .auth-title {
+}
+
+.auth-title {
     font-size: 48rpx;
     font-weight: bold;
     display: block;
-  }
-  
-  .auth-subtitle {
+}
+
+.auth-subtitle {
     font-size: 28rpx;
     color: #888;
     margin-top: 20rpx;
@@ -117,35 +117,46 @@
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
-  }
-  
-  .avatar-button {
-    width: 128rpx !important;          /* 折中尺寸：80rpx ≈ 40px（iPhone6） */
-    height: 128rpx !important;         /* 显式定义高度 */
-    min-width: 0 !important;          /* 覆盖按钮默认最小宽度 */
-    min-height: 0 !important;         /* 覆盖按钮默认最小高度 */
-    padding: 0 !important;            /* 清除内边距 */
-    border: 1.5rpx solid #eee;        /* 细边框 */
-    border-radius: 8rpx;               /* 适当圆角 */
+}
+
+.avatar-button {
+    width: 128rpx !important;
+    /* 折中尺寸：80rpx ≈ 40px（iPhone6） */
+    height: 128rpx !important;
+    /* 显式定义高度 */
+    min-width: 0 !important;
+    /* 覆盖按钮默认最小宽度 */
+    min-height: 0 !important;
+    /* 覆盖按钮默认最小高度 */
+    padding: 0 !important;
+    /* 清除内边距 */
+    border: 1.5rpx solid #eee;
+    /* 细边框 */
+    border-radius: 8rpx;
+    /* 适当圆角 */
     display: flex;
     overflow: hidden;
     box-sizing: border-box;
-  }
-  
-  .avatar-button .avatar {
-    width: 100% !important;           /* 继承容器宽度 */
-    height: 100% !important;           /* 继承容器高度 */
-    object-fit: cover;                /* 关键：裁剪填充 */
-    border-radius: 8rpx;              /* 与按钮圆角一致 */
-  }
-  
-  .avatar-tip {
+}
+
+.avatar-button .avatar {
+    width: 100% !important;
+    /* 继承容器宽度 */
+    height: 100% !important;
+    /* 继承容器高度 */
+    object-fit: cover;
+    /* 关键：裁剪填充 */
+    border-radius: 8rpx;
+    /* 与按钮圆角一致 */
+}
+
+.avatar-tip {
     font-size: 24rpx;
     color: #aaa;
     margin-bottom: 60rpx;
-  }
-  
-  .nickname-wrapper {
+}
+
+.nickname-wrapper {
     width: 100%;
     display: flex;
     align-items: center;
@@ -154,17 +165,17 @@
     border-radius: 16rpx;
     background-color: #fff;
     font-size: 32rpx;
-  }
-  
-  .nickname-label {
+}
+
+.nickname-label {
     color: #333;
-  }
-  
-  .nickname-input {
+}
+
+.nickname-input {
     text-align: right;
-  }
-  
-  .auth-button {
+}
+
+.auth-button {
     width: 100%;
     height: 96rpx;
     border-radius: 48rpx;
@@ -176,79 +187,184 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+}
 
-  .history-item {
+.history-item {
     padding: 20rpx;
     border-bottom: 1rpx solid #f0f0f0;
     margin-bottom: 15rpx;
-  }
-  
-  .history-header {
+}
+
+.history-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10rpx;
-  }
-  
-  .history-date {
+}
+
+.history-date {
     font-size: 24rpx;
     color: #888;
-  }
-  
-  .history-module {
+}
+
+.history-module {
     font-size: 28rpx;
     font-weight: bold;
     color: #333;
-  }
-  
-  .history-indicators {
+}
+
+.history-indicators {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 10rpx;
-  }
-  
-  .indicator-item {
+}
+
+.indicator-item {
     background: #f8f8f8;
     border-radius: 8rpx;
     padding: 8rpx 15rpx;
     margin-right: 15rpx;
     margin-bottom: 10rpx;
     font-size: 26rpx;
-  }
-  
-  .indicator-label {
+}
+
+.indicator-label {
     color: #666;
-  }
-  
-  .indicator-value {
+}
+
+.indicator-value {
     color: #1890ff;
     font-weight: 500;
-  }
-  
-  .history-result {
+}
+
+.history-result {
     text-align: right;
     font-size: 28rpx;
-  }
-  
-  .high-risk {
+}
+
+.high-risk {
     color: #f5222d;
     font-weight: bold;
-  }
-  
-  .low-risk {
+}
+
+.low-risk {
     color: #52c41a;
     font-weight: bold;
-  }
-  
-  .empty-tip {
+}
+
+.empty-tip {
     text-align: center;
     padding: 40rpx 0;
     color: #999;
-  }
-  
-  .empty-icon {
+}
+
+.empty-icon {
     width: 120rpx;
     height: 120rpx;
     display: block;
     margin: 0 auto 20rpx;
-  }
+}
+
+/* --- 【新增/修改】历史记录相关样式 --- */
+.history-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20rpx;
+}
+
+.clear-history-btn {
+    font-size: 26rpx;
+    color: #e53e3e;
+    padding: 10rpx;
+}
+
+.loading-tip,
+.empty-tip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80rpx 0;
+    color: #999;
+    font-size: 28rpx;
+}
+
+.loading-spinner {
+    width: 40rpx;
+    height: 40rpx;
+    border: 4rpx solid #e2e8f0;
+    border-top-color: #4a90e2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.empty-icon {
+    width: 120rpx;
+    height: 120rpx;
+    margin-bottom: 20rpx;
+    opacity: 0.5;
+}
+
+.history-scroll {
+    max-height: 600rpx;
+    /* 限制最大高度，超出则滚动 */
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25rpx 0;
+    border-bottom: 1rpx solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-item:active {
+    background-color: #f7f7f7;
+}
+
+.history-item-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-date {
+    font-size: 30rpx;
+    color: #333;
+    font-weight: 500;
+}
+
+.history-time {
+    font-size: 24rpx;
+    color: #999;
+    margin-top: 8rpx;
+}
+
+.history-item-right {
+    display: flex;
+    align-items: center;
+}
+
+.probability-badge {
+    font-size: 24rpx;
+    font-weight: 500;
+    padding: 8rpx 16rpx;
+    border-radius: 20rpx;
+}
+
+.arrow-right {
+    font-size: 36rpx;
+    color: #ccc;
+    margin-left: 20rpx;
+}

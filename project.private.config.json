@@ -16,8 +16,9 @@
     "showES6CompileOption": false,
     "bigPackageSizeSupport": false,
     "checkInvalidKey": true,
-    "ignoreDevUnusedFiles": true
+    "ignoreDevUnusedFiles": true,
+    "skylineRenderEnable": false
   },
-  "libVersion": "3.10.0",
+  "libVersion": "3.8.10",
   "condition": {}
 }

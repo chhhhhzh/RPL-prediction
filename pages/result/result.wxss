@@ -1,74 +1,241 @@
-.container {
-    padding: 30rpx;
-    min-height: 100vh;
-    box-sizing: border-box;
+/* pages/result/result.wxss */
+page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background-color: #fff7ed;
   }
-  .header {
-    text-align: center;
-    padding: 40rpx 0;
-  }
-  .header-title {
-    font-size: 32rpx;
-    color: #9a3412;
-    display: block;
-  }
-  .probability {
-    font-size: 120rpx;
-    font-weight: bold;
-    color: #f97316;
-    margin: 20rpx 0;
-    display: block;
-  }
-  .confidence {
-    font-size: 28rpx;
-    color: #ea580c;
-    display: block;
-  }
-  .factors-section {
-    margin-top: 60rpx;
-  }
-  .section-title {
-    font-size: 36rpx;
-    font-weight: bold;
-    color: #333;
-  }
-  .factors-list {
-    margin-top: 30rpx;
-  }
-  .factor-card {
-    background-color: #fff;
-    padding: 30rpx;
-    border-radius: 16rpx;
-    margin-bottom: 24rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
-  }
-  .factor-header {
+  
+  /* --- 加载与错误状态 --- */
+  .loading-container,
+  .error-container {
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    padding: 60rpx;
+    box-sizing: border-box;
   }
-  .factor-name {
-    font-size: 30rpx;
-    font-weight: bold;
-    color: #333;
-  }
-  .factor-effect {
-    font-size: 24rpx;
-    padding: 8rpx 16rpx;
-    border-radius: 20rpx;
-  }
-  .positive {
-    background-color: #dcfce7;
-    color: #166534;
-  }
-  .negative {
-    background-color: #fee2e2;
-    color: #991b1b;
-  }
-  .factor-reason {
-    margin-top: 20rpx;
+  
+  /* Vant Loading 兼容样式 */
+  .loading-container .van-loading__text {
     font-size: 28rpx;
-    color: #666;
-    line-height: 1.5;
+    color: #86909c;
+  }
+  
+  .error-title {
+    font-size: 48rpx;
+    font-weight: 600;
+    color: #d96600;
+    margin-bottom: 20rpx;
+  }
+  
+  .error-message {
+    font-size: 32rpx;
+    color: #86909c;
+    margin-bottom: 60rpx;
+  }
+  
+  .error-container .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 30rpx;
+    width: 100%;
+    max-width: 500rpx;
+    margin-top: 40rpx;
+  }
+  
+  .error-container .button-base {
+    width: 100%;
+    height: 96rpx;
+    line-height: 96rpx;
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+  }
+  
+  .error-container .button-base:active {
+    opacity: 0.8;
+  }
+  
+  .retry-button {
+    background-color: #ff9100;
+    color: #fff;
+    border: none;
+    box-shadow: 0 8rpx 16rpx -4rpx rgba(255, 145, 0, 0.3);
+  }
+  
+  .back-button {
+    background-color: transparent;
+    color: #d96600;
+    border: 2rpx solid #fecda6;
+    box-shadow: none;
+  }
+  
+  
+  /* --- 成功状态 --- */
+  
+  .center-wrapper {
+    padding-top: 180rpx; 
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .result-container {
+    width: 100%;
+    padding: 0 40rpx 80rpx 40rpx; /* 调整内边距，特别是底部 */
+    box-sizing: border-box;
+  }
+  
+  .result-card {
+    background: #ffffff;
+    border-radius: 32rpx;
+    box-shadow: 0 10rpx 40rpx -15rpx rgba(4, 28, 64, 0.1);
+    padding: 60rpx 50rpx;
+    margin-bottom: 40rpx;
+  }
+  
+  .probability-section {
+    text-align: center;
+    border-bottom: 1rpx solid #f2f3f5;
+    padding-bottom: 40rpx;
+    margin-bottom: 40rpx;
+  }
+  
+  .probability-label {
+    font-size: 28rpx;
+    color: #86909c;
+    text-transform: uppercase;
+    letter-spacing: 2rpx;
+  }
+  
+  .probability-value {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-top: 10rpx;
+    color: #1d2129;
+  }
+  
+  .probability-value .value {
+    font-size: 120rpx;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  
+  .probability-value .percent {
+    font-size: 40rpx;
+    font-weight: 500;
+    margin-left: 8rpx;
+  }
+  
+  .ci-section {
+    text-align: center;
+  }
+  
+  .ci-label {
+    font-size: 26rpx;
+    color: #86909c;
+  }
+  
+  .ci-value {
+    display: block;
+    font-size: 40rpx;
+    font-weight: 500;
+    color: #1d2129;
+    margin-top: 16rpx;
+    letter-spacing: 1rpx;
+  }
+  
+  .info-section {
+    background-color: #ffffff;
+    border-radius: 24rpx;
+    padding: 30rpx 40rpx;
+    margin-bottom: 40rpx;
+  }
+  
+  .info-title {
+    font-size: 30rpx;
+    font-weight: 500;
+    color: #1d2129;
+    margin-bottom: 16rpx;
+  }
+  
+  .info-text {
+    font-size: 26rpx;
+    color: #4e5969;
+    line-height: 1.7;
+  }
+  
+  /* 风险提示模块 */
+  .risk-factors-container {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20rpx;
+    padding: 40rpx;
+    margin-top: 0;
+    margin-bottom: 40rpx;
+    box-sizing: border-box;
+  }
+  
+  .risk-factors-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #ff9100;
+    margin-bottom: 30rpx;
+    display: block;
+  }
+  
+  .risk-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30rpx;
+  }
+  
+  .risk-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .risk-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 【修复2】强制标题和提示内容各自占一行，并增加间距 */
+  .risk-title {
+    display: block; /* 强制元素成为块级元素，占据一整行 */
+    width: 100%;    /* 确保它撑满宽度 */
+    font-size: 28rpx;
+    font-weight: 500;
+    color: #1d2129;
+  }
+  
+  .risk-tip {
+    display: block; /* 强制元素成为块级元素，占据一整行 */
+    width: 100%;    /* 确保它撑满宽度 */
+    font-size: 26rpx;
+    color: #86909c;
+    line-height: 1.6;
+    margin-top: 10rpx; /* 增加标题和内容之间的间距 */
+  }
+  
+  /* 底部返回按钮 */
+  .back-button-bottom {
+    display: block;
+    width: 100%;
+    height: 96rpx;
+    line-height: 96rpx;
+    text-align: center;
+    background-color: #ff9100;
+    color: #fff;
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: 500;
+    box-shadow: 0 8rpx 16rpx -4rpx rgba(255, 145, 0, 0.3);
   }  

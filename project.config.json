@@ -1,6 +1,6 @@
 {
   "compileType": "miniprogram",
-  "libVersion": "trial",
+  "libVersion": "3.5.0",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -9,7 +9,7 @@
     "coverView": true,
     "es6": true,
     "postcss": true,
-    "minified": true,
+    "minified": false,
     "cloud": true,
     "enhance": true,
     "showShadowRootInWxmlPanel": true,
@@ -30,7 +30,9 @@
     "swc": false,
     "disableSWC": true,
     "disableUseStrict": false,
-    "useCompilerPlugins": false
+    "useCompilerPlugins": false,
+    "ignoreDevUnusedFiles": false,
+    "ignoreUploadUnusedFiles": false
   },
   "condition": {},
   "editorSetting": {

@@ -8,44 +8,43 @@ App({
             console.error('请使用 2.2.3 或以上的基础库以使用云能力');
         } else {
             wx.cloud.init({
-                env: 'cloud1-2gqdzqj9e43361c0', // 自己的环境ID
+                env: 'cloud1-2gqdzqj9e43361c0', // 环境ID
                 traceUser: true,
             });
         }
 
+        this.initPredictionData();
+
         const userInfo = wx.getStorageSync('userInfo');
         if (userInfo) {
-            console.log('发现本地缓存，初始化用户信息');
             this.globalData.userInfo = userInfo;
-        } else {
-            console.log('未发现本地缓存，用户未授权');
         }
-        wx.cloud.callFunction({ name: 'getUserData' })
-            .then(res => {
-            this.globalData.openid = res.result.openid
+        wx.cloud.callFunction({
+                name: 'getUserData'
             })
-        this.initPredictionData();
+            .then(res => {
+                this.globalData.openid = res.result.openid
+            })
     },
 
     initPredictionData() {
-        const initialState = {};
-        for (const key in modulesConfig) {
-            initialState[key] = {
-                id: modulesConfig[key].id,
-                // 深拷贝，防止修改影响原始配置
-                indicators: JSON.parse(JSON.stringify(modulesConfig[key].indicators))
-            };
-        }
-        this.globalData.predictionData = initialState;
+        // 使用深拷贝，防止页面修改影响原始配置
+        this.globalData.predictionData = JSON.parse(JSON.stringify(modulesConfig));
+        console.log("Global prediction data has been initialized.");
+    },
+
+    // 清空并重置全局数据的方法，用于“重新评估”
+    clearPredictionData() {
+        console.log('Clearing global prediction data...');
+        this.initPredictionData(); // 重新初始化为最初的空状态
     },
 
     globalData: {
-        // 所有页面都可以通过 getApp().globalData.predictionData 访问和修改这份数据
-        predictionData: {},
+        predictionData: null, // 初始化为null，在onLaunch中填充
         userInfo: null,
+        openid: null
     },
 
-    // --- 全局授权检查函数 ---
     checkAuthorization(callback) {
         if (this.globalData.userInfo) {
             // 如果全局已经有用户信息，说明已授权，直接执行回调函数
@@ -63,7 +62,6 @@ App({
                 success: (res) => {
                     if (res.confirm) {
                         // 用户点击“去授权”
-                        // 注意：这里假设 profile 是 TabBar 页面，所以使用 switchTab
                         wx.switchTab({
                             url: '/pages/profile/profile'
                         });
