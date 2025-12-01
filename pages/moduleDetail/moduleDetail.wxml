@@ -11,7 +11,7 @@
             <picker 
               mode="selector" 
               range="{{item.option}}"
-              value="{{item.selectedIndex}}"
+              value="{{item.selectedIndex !== null ? item.selectedIndex : 0}}"
               bindchange="handleSelectChange"
               data-indicatorid="{{item.id}}"
               >

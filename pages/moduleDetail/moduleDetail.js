@@ -10,6 +10,16 @@ Page({
     const moduleId = options.id;
     // 从全局数据中获取当前模块的数据
     const moduleData = app.globalData.predictionData[moduleId];
+    
+    // 确保所有 select 类型的字段都有 selectedIndex 属性
+    if (moduleData && moduleData.indicators) {
+      moduleData.indicators.forEach(indicator => {
+        if (indicator.inputType === 'select' && indicator.selectedIndex === undefined) {
+          indicator.selectedIndex = null;
+        }
+      });
+    }
+    
     this.setData({
       moduleId: moduleId,
       module: moduleData

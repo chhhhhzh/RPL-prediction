@@ -25,7 +25,7 @@ const modulesConfig = {
                 label: '身高cm',
                 value: '',
                 unit: 'cm',
-                placeholder: '用于计算BMI',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -33,7 +33,7 @@ const modulesConfig = {
                 label: '孕前体重kg',
                 value: '',
                 unit: 'kg',
-                placeholder: '用于计算BMI',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -79,7 +79,8 @@ const modulesConfig = {
                 placeholder: '请选择',
                 inputType: 'select',
                 // 这里列出常见核型，云函数将尝试映射
-                option: ['正常/阴性', '颗粒型', '胞浆颗粒型', '核均质型', '斑点型', '核仁型', '着丝点型', '其他异常']
+                option: ['正常/阴性', '颗粒型', '胞浆颗粒型', '核均质型', '斑点型', '核仁型', '着丝点型', '其他异常'],
+                selectedIndex: null
             },
             {
                 id: 'titer',
@@ -88,7 +89,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '请选择',
                 inputType: 'select',
-                option: ['阴性/1:80以下', '1:80', '1:160', '1:320', '1:640', '1:1000及以上']
+                option: ['阴性/1:80以下', '1:80', '1:160', '1:320', '1:640', '1:1000及以上'],
+                selectedIndex: null
             },
             {
                 id: 'ENA',
@@ -97,22 +99,23 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '阴性/阳性',
                 inputType: 'select',
-                option: ['阴性', '阳性']
+                option: ['阴性', '阳性'],
+                selectedIndex: null
             },
             // 以下为具体的单项抗体
-            { id: 'Sm', label: '抗Sm抗体', value: '', unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'aU1_nRNP', label: '抗U1-nRNP抗体', value: '',  unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'SSA_Ro52', label: '抗Ro-52 (KRO52)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'SSA_Ro60', label: '抗SSA/Ro60 (KSS-B/AH)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] }, 
-            { id: 'SSB_La', label: '抗SSB/La (KSL-DNA)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'Scl_70', label: '抗Scl-70 (KS-A)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'Jo_1', label: '抗Jo-1等综合 (RF/PS/Jo...)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'CENP_B', label: '抗着丝点B (ACA)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'dsDNA', label: '抗dsDNA (AAE)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'Nukleosomen', label: '抗核小体 (AHA)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'Histone', label: '抗组蛋白 (HTT)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'AMA_M2', label: '抗线粒体M2 (AMM2A)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'] },
-            { id: 'PM_Scl', label: '抗PM-Scl (APMSCL)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'] }
+            { id: 'Sm', label: '抗Sm抗体', value: '', unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'aU1_nRNP', label: '抗U1-nRNP抗体', value: '',  unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'SSA_Ro52', label: '抗Ro-52 (KRO52)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'SSA_Ro60', label: '抗SSA/Ro60 (KSS-B/AH)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null }, 
+            { id: 'SSB_La', label: '抗SSB/La (KSL-DNA)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'Scl_70', label: '抗Scl-70 (KS-A)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'Jo_1', label: '抗Jo-1等综合 (RF/PS/Jo...)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'CENP_B', label: '抗着丝点B (ACA)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'dsDNA', label: '抗dsDNA (AAE)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'Nukleosomen', label: '抗核小体 (AHA)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'Histone', label: '抗组蛋白 (HTT)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'AMA_M2', label: '抗线粒体M2 (AMM2A)', value: '',  unit: '',placeholder: '阴性/阳性', inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null },
+            { id: 'PM_Scl', label: '抗PM-Scl (APMSCL)', value: '',   unit: '',placeholder: '阴性/阳性',inputType: 'select', option: ['阴性', '阳性'], selectedIndex: null }
         ]
     },
 
@@ -128,7 +131,7 @@ const modulesConfig = {
                 label: '抗心磷脂抗体 IgG',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -136,7 +139,7 @@ const modulesConfig = {
                 label: '抗心磷脂抗体 IgM',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -144,7 +147,7 @@ const modulesConfig = {
                 label: '抗β2糖蛋白1 IgM',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -152,7 +155,7 @@ const modulesConfig = {
                 label: '抗β2糖蛋白1 IgG/IgA',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -162,7 +165,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '阴性/阳性',
                 inputType: 'select',
-                option: ['阴性', '阳性']
+                option: ['阴性', '阳性'],
+                selectedIndex: null
             },
             {
                 id: 'proteinS',
@@ -171,7 +175,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'APS_diagnosis',
@@ -180,7 +185,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
              {
                 id: 'thrombosis_history',
@@ -189,7 +195,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             }
         ]
     },
@@ -206,7 +213,7 @@ const modulesConfig = {
                 label: '25-羟维生素D',
                 value: '',
                 unit: 'ng/mL',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -214,7 +221,7 @@ const modulesConfig = {
                 label: '抗甲状腺球蛋白 (TGAb)',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -222,7 +229,7 @@ const modulesConfig = {
                 label: '抗甲状腺过氧化物酶 (TPOAb)',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -232,7 +239,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'hyperlipidemia',
@@ -241,7 +249,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'homocysteine',
@@ -250,7 +259,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'thyroid',
@@ -259,7 +269,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'PCOS',
@@ -268,7 +279,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             }
         ]
     },
@@ -286,7 +298,7 @@ const modulesConfig = {
                 label: '补体 C3',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -294,7 +306,7 @@ const modulesConfig = {
                 label: '补体 C4',
                 value: '',
                 unit: '',
-                placeholder: '数值',
+                placeholder: '请输入',
                 inputType: 'number'
             },
             {
@@ -304,7 +316,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'placenta',
@@ -313,7 +326,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'infection',
@@ -322,7 +336,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'hypertension',
@@ -331,7 +346,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             },
             {
                 id: 'kidney',
@@ -340,7 +356,8 @@ const modulesConfig = {
                 unit: '',
                 placeholder: '否/是',
                 inputType: 'select',
-                option: ['否', '是']
+                option: ['否', '是'],
+                selectedIndex: null
             }
         ]
     }
