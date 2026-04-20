@@ -21,6 +21,7 @@ const keyMap = {
     'age': '年龄',
     'weightGainKg': '孕期增加体重kg',
     'previousMiscarriageCount': '既往流产次数',
+    'previousLiveBirthCount': '先前活产小孩数',
     
     // 2. 自身免疫 ANA
     'ANA': 'ANA',
@@ -53,7 +54,7 @@ const keyMap = {
     'thrombosis_history': '反复肝损/血栓形成/血小板聚集率高/D2高',
 
     // 4. 内分泌
-    '25_VITD': '25-VITD',
+    'VITD': 'VITD',
     'TGAb': 'TGAb',
     'TPOAb': 'TPOAb',
     'insulinResistance': '胰岛素抵抗/糖尿病',
@@ -69,13 +70,31 @@ const keyMap = {
     'placenta': '前置胎盘/胎盘植入',
     'infection': '绒毛膜羊膜炎/支原体感染/大肠埃希菌感染/胎儿巨细胞病毒等',
     'hypertension': '慢性高血压',
-    'kidney': '慢性肾炎/肾病/蛋白尿/肾结石'
+    'kidney': '慢性肾炎/肾病/蛋白尿/肾结石',
+    'connectiveTissueDisease': '结缔组织疾病/类风湿',
+    'chromosomalAbnormality': '平衡易位/臂间倒位（染色体异常）',
+    'thrombocytopenia': '血小板减少',
+    'PAI1_homozygous': 'PAI-I纯合子',
+    'intrahepaticCholestasis': '先天性/妊娠期肝内胆汁淤积症',
+    'cervicalInsufficiency': '宫颈机能不全',
+    'smokingHistory': '吸烟病史',
+
+    // 6. 子宫动脉数据（新增）
+    'L_PSC': 'L-PSC（cm/s）',
+    'L_RI': 'l-RI',
+    'L_PI': 'l-PI',
+    'L_SD_ratio': 'L-S/D',
+    'R_PSC': 'R-PSC（cm/s）',
+    'R_RI': 'R-RI',
+    'R_PI': 'R-PI',
+    'R_SD_ratio': 'R-S/D',
+    'S_SD_ratio': 'S--S/D'
 };
 
 // --- 风险提示配置 ---
 const riskTips = {
     '既往流产次数': { title: '既往流产次数风险', tip: '次数越多风险越高，请遵医嘱。' },
-    '25-VITD': { title: '维生素D水平偏低', tip: '可能增加不良风险，建议咨询医生。' },
+    'VITD': { title: '维生素D水平偏低', tip: '可能增加不良风险，建议咨询医生。' },
     'ACLIgM': { title: '抗心磷脂抗体IgM阳性', tip: '提示抗磷脂综合征风险。' },
     'ACLIgG': { title: '抗心磷脂抗体IgG阳性', tip: '提示抗磷脂综合征风险。' },
     'LA': { title: '狼疮抗凝物阳性', tip: '抗磷脂综合征重要指标。' },
@@ -84,7 +103,14 @@ const riskTips = {
     'ANA': { title: 'ANA 阳性', tip: '需结合滴度和核型评估自身免疫风险。' },
     '抗磷脂综合征': { title: '确诊APS', tip: '高危因素，需严格管理。' },
     '胰岛素抵抗/糖尿病': { title: '代谢异常', tip: '建议控制血糖。' },
-    '肥胖': { title: 'BMI 偏高', tip: '建议控制体重。' }
+    '肥胖': { title: 'BMI 偏高', tip: '建议控制体重。' },
+    'R-RI': { title: '右侧子宫动脉阻力指数偏高', tip: '提示胎盘灌注异常风险。' },
+    'L-RI': { title: '左侧子宫动脉阻力指数偏高', tip: '提示胎盘灌注异常风险。' },
+    '平衡易位/臂间倒位（染色体异常）': { title: '染色体异常', tip: '建议遗传咨询。' },
+    '血小板减少': { title: '血小板减少', tip: '需关注出血风险。' },
+    'PAI-I纯合子': { title: 'PAI-I纯合子', tip: '血栓风险因素。' },
+    '宫颈机能不全': { title: '宫颈机能不全', tip: '建议医学评估。' },
+    '吸烟病史': { title: '吸烟病史', tip: '建议戒烟以降低风险。' }
 };
 
 // --- 辅助：数值转换函数 ---
@@ -179,7 +205,7 @@ const identifyRiskFactors = (processedDataMap) => {
     const threshold = 0.5;
 
     if (processedDataMap['既往流产次数'] >= 2) risks.push(riskTips['既往流产次数']);
-    if (processedDataMap['25-VITD'] < 18) risks.push(riskTips['25-VITD']);
+    if (processedDataMap['VITD'] < 18) risks.push(riskTips['VITD']);
     if (processedDataMap['ACLIgM'] > 9) risks.push(riskTips['ACLIgM']);
     if (processedDataMap['ACLIgG'] > 9) risks.push(riskTips['ACLIgG']);
     if (processedDataMap['LA'] > threshold) risks.push(riskTips['LA']);
@@ -189,6 +215,15 @@ const identifyRiskFactors = (processedDataMap) => {
     if (processedDataMap['肥胖'] > threshold) risks.push(riskTips['肥胖']);
     if (processedDataMap['抗磷脂综合征'] > threshold) risks.push(riskTips['抗磷脂综合征']);
     if (processedDataMap['胰岛素抵抗/糖尿病'] > threshold) risks.push(riskTips['胰岛素抵抗/糖尿病']);
+
+    // 新增的风险因素识别
+    if (processedDataMap['R-RI'] > 1) risks.push(riskTips['R-RI']);
+    if (processedDataMap['l-RI'] > 1) risks.push(riskTips['L-RI']);
+    if (processedDataMap['平衡易位/臂间倒位（染色体异常）'] > threshold) risks.push(riskTips['平衡易位/臂间倒位（染色体异常）']);
+    if (processedDataMap['血小板减少'] > threshold) risks.push(riskTips['血小板减少']);
+    if (processedDataMap['PAI-I纯合子'] > threshold) risks.push(riskTips['PAI-I纯合子']);
+    if (processedDataMap['宫颈机能不全'] > threshold) risks.push(riskTips['宫颈机能不全']);
+    if (processedDataMap['吸烟病史'] > threshold) risks.push(riskTips['吸烟病史']);
 
     const uniqueRisks = [];
     const seenTitles = new Set();

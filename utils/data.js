@@ -51,6 +51,14 @@ const modulesConfig = {
                 unit: '次',
                 placeholder: '请输入',
                 inputType: 'number'
+            },
+            {
+                id: 'previousLiveBirthCount',
+                label: '先前活产小孩数',
+                value: '',
+                unit: '个',
+                placeholder: '请输入',
+                inputType: 'number'
             }
         ]
     },
@@ -209,7 +217,7 @@ const modulesConfig = {
         color: 'bg-yellow-100',
         textColor: 'text-yellow-800',
         indicators: [{
-                id: '25_VITD',
+                id: 'VITD',
                 label: '25-羟维生素D',
                 value: '',
                 unit: 'ng/mL',
@@ -358,6 +366,162 @@ const modulesConfig = {
                 inputType: 'select',
                 option: ['否', '是'],
                 selectedIndex: null
+            },
+            {
+                id: 'connectiveTissueDisease',
+                label: '结缔组织疾病/类风湿',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'chromosomalAbnormality',
+                label: '平衡易位/臂间倒位（染色体异常）',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'thrombocytopenia',
+                label: '血小板减少',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'PAI1_homozygous',
+                label: 'PAI-I纯合子',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'intrahepaticCholestasis',
+                label: '先天性/妊娠期肝内胆汁淤积症',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'cervicalInsufficiency',
+                label: '宫颈机能不全',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            },
+            {
+                id: 'smokingHistory',
+                label: '吸烟病史',
+                value: '',
+                unit: '',
+                placeholder: '否/是',
+                inputType: 'select',
+                option: ['否', '是'],
+                selectedIndex: null
+            }
+        ]
+    },
+
+    // 模块6：子宫动脉数据（新增）
+    uterineArtery: {
+        id: 'uterineArtery',
+        title: '子宫动脉数据',
+        icon: icons.waves,
+        color: 'bg-green-100',
+        textColor: 'text-green-800',
+        indicators: [
+            // 左侧子宫动脉
+            {
+                id: 'L_PSC',
+                label: '左侧子宫动脉血流速度',
+                value: '',
+                unit: 'cm/s',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'L_RI',
+                label: '左侧子宫动脉阻力指数',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'L_PI',
+                label: '左侧子宫动脉搏动指数',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'L_SD_ratio',
+                label: '左侧子宫动脉 S/D 比值',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            // 右侧子宫动脉
+            {
+                id: 'R_PSC',
+                label: '右侧子宫动脉血流速度',
+                value: '',
+                unit: 'cm/s',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'R_RI',
+                label: '右侧子宫动脉阻力指数',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'R_PI',
+                label: '右侧子宫动脉搏动指数',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            {
+                id: 'R_SD_ratio',
+                label: '右侧子宫动脉 S/D 比值',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
+            },
+            // 平均值
+            {
+                id: 'S_SD_ratio',
+                label: '子宫动脉 S/D 比值平均值',
+                value: '',
+                unit: '',
+                placeholder: '请输入数值',
+                inputType: 'number'
             }
         ]
     }
