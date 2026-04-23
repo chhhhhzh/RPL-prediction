@@ -2,6 +2,10 @@
   <nav-bar title="{{module.title}}" showBack="{{true}}" showHome="{{true}}"></nav-bar>
   
   <view class="container">
+    <view class="ai-tip-card" bindtap="goToAIChat">
+      <text class="ai-tip-title">AI辅助录入</text>
+      <text class="ai-tip-text">对这个模块不确定怎么填？点我获取逐项解释与填写建议</text>
+    </view>
     <view class="form-container">
       <block wx:for="{{module.indicators}}" wx:key="id">
         <view class="form-item">

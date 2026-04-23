@@ -1,0 +1,133 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fff7ed 0%, #fff 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-container {
+  flex: 1;
+  padding: 24rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.intro-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 10rpx 24rpx rgba(15, 23, 42, 0.06);
+  margin-bottom: 18rpx;
+}
+
+.intro-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #9a3412;
+}
+
+.intro-text {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 25rpx;
+  color: #7c2d12;
+  line-height: 1.7;
+}
+
+.quick-list {
+  margin-top: 16rpx;
+}
+
+.quick-title {
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 10rpx;
+}
+
+.chip {
+  padding: 10rpx 16rpx;
+  background: #fff7ed;
+  border: 1rpx solid #fed7aa;
+  border-radius: 999rpx;
+  color: #c2410c;
+  font-size: 24rpx;
+}
+
+.message-list {
+  height: calc(100vh - 620rpx);
+  box-sizing: border-box;
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.row-ai {
+  justify-content: flex-start;
+}
+
+.row-user {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 85%;
+  padding: 18rpx 20rpx;
+  border-radius: 16rpx;
+  font-size: 27rpx;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.bubble-ai {
+  background: #ffffff;
+  color: #334155;
+  border: 1rpx solid #f1f5f9;
+}
+
+.bubble-user {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  color: #ffffff;
+}
+
+.loading-row {
+  margin-bottom: 12rpx;
+}
+
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 14rpx 18rpx calc(14rpx + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1rpx solid #f3f4f6;
+}
+
+.input {
+  flex: 1;
+  height: 74rpx;
+  border-radius: 37rpx;
+  background: #f8fafc;
+  padding: 0 24rpx;
+  font-size: 27rpx;
+}
+
+.send-btn {
+  width: 130rpx;
+  height: 74rpx;
+  line-height: 74rpx;
+  border-radius: 37rpx;
+  border: none;
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  color: #fff;
+  font-size: 27rpx;
+  font-weight: 600;
+}

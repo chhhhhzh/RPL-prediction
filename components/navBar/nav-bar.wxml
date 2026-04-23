@@ -4,8 +4,11 @@
       <image src="{{iconBack}}"></image>
     </view>
     <view class="title">{{title}}</view>
-    <view class="home-icon" wx:if="{{showHome}}" bind:tap="goHome">
-        <image src="{{iconHome}}"></image>
+    <view class="right-actions">
+      <view class="ai-pill" wx:if="{{showAI}}" bind:tap="goAI">AI</view>
+      <view class="home-icon" wx:if="{{showHome}}" bind:tap="goHome">
+          <image src="{{iconHome}}"></image>
+      </view>
     </view>
-  </view>
+  </view> 
 </view>

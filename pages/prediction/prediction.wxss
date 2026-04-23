@@ -1,6 +1,7 @@
 .container {
     padding: 30rpx;
     padding-bottom: 450rpx; 
+    background: linear-gradient(180deg, #fff7ed 0%, #ffffff 80%);
 }
 
 .card-grid {
@@ -15,7 +16,8 @@
     right: 0;
     padding: 60rpx;
     padding-bottom: calc(30rpx + env(safe-area-inset-bottom));
-    border-top: 1rpx solid #f2f3f5;
+    border-top: 1rpx solid #ffedd5;
+    background: rgba(255, 255, 255, 0.92);
     display: flex;
     flex-direction: column; 
     gap: 30rpx;
@@ -25,7 +27,7 @@
     width: 100%;
     height: 80rpx;
     line-height: 96rpx;
-    border-radius: 16rpx;
+    border-radius: 20rpx;
     font-size: 32rpx;
     font-weight: bold;
     border: none;
@@ -41,8 +43,9 @@
 }
 
 .primary {
-    background-color: #f97316;
+    background: linear-gradient(135deg, #fb923c, #f97316);
     color: white;
+    box-shadow: 0 14rpx 24rpx rgba(249, 115, 22, 0.24);
 }
 
 .secondary {
@@ -50,6 +53,12 @@
     color: #f97316;
     border: 1rpx solid #f97316;
     box-sizing: border-box;
+}
+
+.ai {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1rpx dashed #fdba74;
 }
 
 .icon {
@@ -65,5 +74,6 @@
     order: 3; 
 }
 
-.secondary { order: 1; }
-.primary   { order: 2; }
+.ai        { order: 1; }
+.secondary { order: 2; }
+.primary   { order: 3; }

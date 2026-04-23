@@ -51,6 +51,39 @@
                 </view>
             </block>
 
+            <view class="ai-report-container">
+                <text class="ai-report-title">2.0 智能随访报告</text>
+
+                <view wx:if="{{aiReportLoading}}" class="ai-report-loading">
+                    <text>正在结合历史时序数据生成个性化解读...</text>
+                </view>
+
+                <view wx:elif="{{aiReportError}}" class="ai-report-error">
+                    <text>{{aiReportError}}</text>
+                    <button class="ai-report-retry" bindtap="onRetryAiReport">重新生成</button>
+                </view>
+
+                <view wx:elif="{{aiReportText}}" class="ai-report-content">
+                    <text class="ai-report-text">{{aiReportText}}</text>
+                    <block wx:if="{{temporalHighlights && temporalHighlights.length > 0}}">
+                        <view class="temporal-section">
+                            <text class="temporal-title">时序趋势摘要</text>
+                            <view class="temporal-list">
+                                <view class="temporal-item" wx:for="{{temporalHighlights}}" wx:key="*this">
+                                    <text>• {{item}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                </view>
+
+                <view wx:else class="ai-report-loading">
+                    <text>暂无智能解读</text>
+                </view>
+
+                <button class="ai-chat-btn" bindtap="goToAIChatFromResult">继续问AI</button>
+            </view>
+
             <navigator url="/pages/prediction/prediction" open-type="navigateBack" class="back-button-bottom">返回上一页</navigator>
         </view>
     </view>

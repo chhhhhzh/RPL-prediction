@@ -1,0 +1,43 @@
+<view class="page">
+  <nav-bar title="AI健康助手" showBack="{{true}}" showHome="{{true}}" showAI="{{false}}"></nav-bar>
+
+  <view class="chat-container">
+    <view class="intro-card">
+      <text class="intro-title">2.0 智能对话系统</text>
+      <text class="intro-text">我会结合您的预测结果、风险因子和历史趋势，给出可执行的随访建议。</text>
+      <view class="quick-list">
+        <text class="quick-title">快捷提问</text>
+        <view class="quick-chips">
+          <view class="chip" wx:for="{{quickPrompts}}" wx:key="*this" data-question="{{item}}" bindtap="onQuickAsk">{{item}}</view>
+        </view>
+      </view>
+    </view>
+
+    <scroll-view class="message-list" scroll-y scroll-with-animation scroll-top="{{scrollTop}}">
+      <block wx:for="{{messages}}" wx:key="id">
+        <view class="message-row {{item.role === 'user' ? 'row-user' : 'row-ai'}}">
+          <view class="bubble {{item.role === 'user' ? 'bubble-user' : 'bubble-ai'}}">
+            <text selectable>{{item.content}}</text>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{isLoading}}" class="loading-row">
+        <view class="bubble bubble-ai">
+          <text>AI 正在思考中...</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="input-bar">
+    <input
+      class="input"
+      placeholder="例如：我现在最该优先复查什么？"
+      value="{{inputValue}}"
+      bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="handleSend"
+    />
+    <button class="send-btn" bindtap="handleSend" loading="{{isLoading}}" disabled="{{isLoading}}">发送</button>
+  </view>
+</view>

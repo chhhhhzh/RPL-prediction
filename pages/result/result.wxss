@@ -224,6 +224,98 @@ page {
     line-height: 1.6;
     margin-top: 10rpx; /* 增加标题和内容之间的间距 */
   }
+
+  .ai-report-container {
+    background: #ffffff;
+    border-radius: 20rpx;
+    padding: 34rpx 36rpx;
+    margin-bottom: 40rpx;
+    box-sizing: border-box;
+  }
+
+  .ai-report-title {
+    display: block;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #1d2129;
+    margin-bottom: 18rpx;
+  }
+
+  .ai-report-loading {
+    font-size: 26rpx;
+    color: #86909c;
+    line-height: 1.7;
+  }
+
+  .ai-report-error text {
+    display: block;
+    font-size: 26rpx;
+    color: #c7342f;
+    line-height: 1.6;
+  }
+
+  .ai-report-retry {
+    margin-top: 20rpx;
+    width: 220rpx;
+    height: 68rpx;
+    line-height: 68rpx;
+    border-radius: 34rpx;
+    font-size: 26rpx;
+    background: #ffedd5;
+    color: #d96600;
+    border: 1rpx solid #fed7aa;
+  }
+
+  .ai-report-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18rpx;
+  }
+
+  .ai-report-text {
+    font-size: 27rpx;
+    color: #334155;
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  .temporal-section {
+    background: #fff7ed;
+    border-radius: 16rpx;
+    padding: 20rpx 22rpx;
+  }
+
+  .temporal-title {
+    display: block;
+    font-size: 26rpx;
+    font-weight: 500;
+    color: #c2410c;
+    margin-bottom: 10rpx;
+  }
+
+  .temporal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+  }
+
+  .temporal-item text {
+    font-size: 24rpx;
+    color: #7c2d12;
+    line-height: 1.6;
+  }
+
+  .ai-chat-btn {
+    margin-top: 20rpx;
+    height: 76rpx;
+    line-height: 76rpx;
+    border-radius: 38rpx;
+    border: 1rpx solid #fdba74;
+    background: #fff7ed;
+    color: #c2410c;
+    font-size: 27rpx;
+    font-weight: 500;
+  }
   
   /* 底部返回按钮 */
   .back-button-bottom {

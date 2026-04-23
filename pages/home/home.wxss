@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #fff7ed;
+    background: linear-gradient(180deg, #fff7ed 0%, #ffffff 90%);
     padding: 80rpx;
     box-sizing: border-box;
     text-align: center;
@@ -22,6 +22,7 @@
     font-weight: bold;
     color: #9a3412;
     margin-bottom: 40rpx;
+    text-shadow: 0 10rpx 20rpx rgba(154, 52, 18, 0.12);
 }
 
 .subtitle {
@@ -29,6 +30,16 @@
     color: #c2410c;
     max-width: 600rpx;
     line-height: 1.6;
+}
+
+.feature-pill {
+    margin-top: 28rpx;
+    padding: 12rpx 24rpx;
+    border-radius: 999rpx;
+    background: #fff1e6;
+    border: 1rpx solid #fed7aa;
+    color: #c2410c;
+    font-size: 24rpx;
 }
 
 .button-group {
@@ -41,7 +52,7 @@
     border-radius: 50rpx;
     font-size: 32rpx;
     font-weight: bold;
-    margin-top: 30rpx;
+    margin-top: 24rpx;
     border: none;
     display: flex;
     align-items: center;
@@ -49,11 +60,13 @@
 }
 
 .primary {
-    background-color: #fb923c;
+    background: linear-gradient(135deg, #fb923c, #f97316);
     color: white;
+    box-shadow: 0 16rpx 26rpx rgba(249, 115, 22, 0.25);
 }
 
 .secondary {
-    background-color: #fed7aa;
-    color: #9a3412;
+    background-color: #ffffff;
+    color: #c2410c;
+    border: 1rpx solid #fdba74;
 }

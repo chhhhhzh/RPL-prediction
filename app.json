@@ -4,6 +4,7 @@
     "pages/prediction/prediction",
     "pages/moduleDetail/moduleDetail",
     "pages/result/result",
+    "pages/aiChat/aiChat",
     "pages/profile/profile",
     "pages/historyDetail/historyDetail"
   ],

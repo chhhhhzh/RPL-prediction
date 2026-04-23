@@ -38,6 +38,16 @@ Page({
             url: `/pages/moduleDetail/moduleDetail?id=${moduleId}`,
         });
     },
+    goToAIChat() {
+        const userInputData = this._prepareInputData();
+        const filledCount = Object.keys(userInputData).length;
+        const question = filledCount > 0
+            ? `我目前已录入 ${filledCount} 项指标，请告诉我还应优先补充哪些关键指标，才能让预测更可靠？`
+            : '我还没开始录入，请告诉我最关键的前5项指标应该先填什么。';
+        wx.navigateTo({
+            url: `/pages/aiChat/aiChat?from=prediction&prefill=${encodeURIComponent(question)}`
+        });
+    },
 
     // 清空数据
     handleClearData() {

@@ -12,6 +12,10 @@ Component({
       showHome: {
         type: Boolean,
         value: false
+      },
+      showAI: {
+        type: Boolean,
+        value: true
       }
     },
     data: {
@@ -36,6 +40,11 @@ Component({
         wx.reLaunch({
           url: '/pages/home/home',
         })
+      },
+      goAI() {
+        wx.navigateTo({
+          url: '/pages/aiChat/aiChat?from=nav'
+        });
       }
     }
   })

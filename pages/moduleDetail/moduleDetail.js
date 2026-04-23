@@ -127,6 +127,13 @@ Page({
         wx.showToast({ title: `失败:${err.errCode || err.message}`, icon: 'none' });
     }
   },
+  goToAIChat() {
+    const module = this.data.module || {};
+    const question = `我正在填写“${module.title || '当前模块'}”，请按通俗语言告诉我每项指标分别代表什么、异常意味着什么，以及优先填写顺序。`;
+    wx.navigateTo({
+      url: `/pages/aiChat/aiChat?from=moduleDetail&prefill=${encodeURIComponent(question)}`
+    });
+  },
 
   saveAndBack() {
     // 我们不再需要在返回时手动保存到全局数据，

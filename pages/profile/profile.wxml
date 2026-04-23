@@ -8,6 +8,14 @@
             <text class="nickname">{{userInfo.nickName}}</text>
         </view>
 
+        <view class="ai-entry-card" bindtap="goToAIChat">
+            <view class="ai-entry-left">
+                <text class="ai-entry-title">AI 智能助手</text>
+                <text class="ai-entry-desc">结合你的历史趋势与风险因子，给出个性化随访建议</text>
+            </view>
+            <text class="ai-entry-arrow">›</text>
+        </view>
+
         <view class="chart-card history-card">
             <view class="card-header">
                 <text class="chart-title">历史预测记录</text>
@@ -32,7 +40,7 @@
                         </view>
                         <view class="history-item-right">
                             <view class="probability-badge" style="background-color: {{item.badgeBgColor}}; color: {{item.badgeColor}};">
-                                活产率: {{100-item.displayProbability}}%
+                                活产率: {{item.liveBirthDisplay}}
                             </view>
                             <view class="arrow-right">›</view>
                         </view>
@@ -51,15 +59,35 @@
         <view class="chart-card">
             <view class="card-header">
                 <text class="chart-title">关键指标历史曲线</text>
-                <picker bindchange="bindPickerChange" value="{{indicatorIndex}}" range="{{indicatorList}}" range-key="title">
+                <picker wx:if="{{indicatorList.length}}" bindchange="bindPickerChange" value="{{indicatorIndex}}" range="{{indicatorList}}" range-key="title">
                     <view class="picker-display">
                         <text class="picker-text">{{indicatorList[indicatorIndex].title}}</text>
                         <image class="picker-arrow" src="{{iconDown}}"></image>
                     </view>
                 </picker>
+                <view wx:else class="picker-display">
+                    <text class="picker-text">暂无可用指标</text>
+                </view>
             </view>
             <view class="chart-container">
                 <ec-canvas id="line-chart" canvas-id="line-canvas" ec="{{ line }}"></ec-canvas>
+            </view>
+        </view>
+
+        <view class="chart-card ai-insight-card">
+            <view class="card-header">
+                <text class="chart-title">AI图表解读</text>
+                <text class="refresh-ai-btn" bindtap="onRetryProfileAiInsight">重新解读</text>
+            </view>
+            <view wx:if="{{profileAiLoading}}" class="loading-tip">
+                <view class="loading-spinner"></view>
+                <text>正在结合雷达图与历史曲线分析...</text>
+            </view>
+            <view wx:elif="{{profileAiError}}" class="ai-error-tip">
+                <text>{{profileAiError}}</text>
+            </view>
+            <view wx:else class="ai-insight-content">
+                <text selectable>{{profileAiText}}</text>
             </view>
         </view>
 

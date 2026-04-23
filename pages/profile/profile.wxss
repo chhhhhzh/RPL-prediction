@@ -1,13 +1,14 @@
 .container {
     padding: 30rpx;
+    background: linear-gradient(180deg, #fff7ed 0%, #ffffff 85%);
 }
 
 .chart-card {
     background-color: #fff;
     padding: 30rpx;
-    border-radius: 16rpx;
+    border-radius: 20rpx;
     margin-bottom: 30rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12rpx 24rpx rgba(15, 23, 42, 0.06);
 }
 
 .loading-tip {
@@ -46,16 +47,16 @@ ec-canvas {
     align-items: center;
     padding: 40rpx;
     background-color: #fff;
-    border-radius: 16rpx;
+    border-radius: 20rpx;
     margin-bottom: 30rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12rpx 24rpx rgba(15, 23, 42, 0.06);
 }
 
 .user-info-card>.avatar {
     width: 128rpx;
     height: 128rpx;
     object-fit: cover;
-    border-radius: 8rpx;
+    border-radius: 64rpx;
 }
 
 .nickname {
@@ -179,7 +180,7 @@ ec-canvas {
     width: 100%;
     height: 96rpx;
     border-radius: 48rpx;
-    background-color: #f97316;
+    background: linear-gradient(135deg, #fb923c, #f97316);
     color: white;
     font-size: 32rpx;
     font-weight: bold;
@@ -187,6 +188,7 @@ ec-canvas {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 14rpx 24rpx rgba(249, 115, 22, 0.24);
 }
 
 .history-item {
@@ -367,4 +369,45 @@ ec-canvas {
     font-size: 36rpx;
     color: #ccc;
     margin-left: 20rpx;
+}
+
+.ai-insight-card {
+    margin-top: -4rpx;
+}
+
+.refresh-ai-btn {
+    font-size: 24rpx;
+    color: #c2410c;
+    background: #fff7ed;
+    border: 1rpx solid #fed7aa;
+    border-radius: 999rpx;
+    padding: 6rpx 18rpx;
+}
+
+.ai-insight-content {
+    margin-top: 12rpx;
+    background: #fffaf5;
+    border: 1rpx solid #ffedd5;
+    border-radius: 16rpx;
+    padding: 20rpx;
+}
+
+.ai-insight-content text {
+    font-size: 26rpx;
+    color: #7c2d12;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+.ai-error-tip {
+    margin-top: 12rpx;
+    background: #fff1f2;
+    border: 1rpx solid #fecdd3;
+    border-radius: 12rpx;
+    padding: 16rpx;
+}
+
+.ai-error-tip text {
+    font-size: 25rpx;
+    color: #be123c;
 }

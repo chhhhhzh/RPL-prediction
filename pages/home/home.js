@@ -10,4 +10,9 @@ Page({
             });
         });
     },
+    goToAIChat() {
+        wx.navigateTo({
+            url: '/pages/aiChat/aiChat?from=home&prefill=' + encodeURIComponent('我刚开始使用这个系统，请给我一个分步骤的使用建议')
+        });
+    }
 })
